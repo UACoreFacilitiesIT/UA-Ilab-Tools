@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilab-response>
+    <custom-forms type="array">
+        <custom-form>
+            <id type="integer">3271720</id>
+            <name>Transgenic Mouse Genotyping</name>
+            <note>Test</note>
+            <fields type="array">
+                <field>
+                    <label>PreValidated Assay List</label>
+                    <identifier>enter_label_here_1</identifier>
+                    <type>file_no_upload</type>
+                    <default>485759</default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>PreValidated Assay List</name>
+                </field>
+                <field>
+                    <label>Samples</label>
+                    <identifier>tgm_table</identifier>
+                    <show-if></show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample Barcode,Animal ID(optional), TGM Assay 1,TGM Assay 2,TGM Assay 3,TGM Assay 4,TGM Assay 5,TGM Other Assay List</default>
+                    <value>[["UA2001111","5610","NFU",null,null,null,null,null],["UA2002222","5611","NFU",null,null,null,null,null],["UA2003333","5612","NFU",null,null,null,null,null],["UA2004444","5613","NFU",null,null,null,null,null],["UA2005555","5614","NFU",null,null,null,null,null]]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+Barcode&amp;grid_settings%5Bheaders%5D%5B%5D=Animal+ID(optional)&amp;grid_settings%5Bheaders%5D%5B%5D=+TGM+Assay+1&amp;grid_settings%5Bheaders%5D%5B%5D=TGM+Assay+2&amp;grid_settings%5Bheaders%5D%5B%5D=TGM+Assay+3&amp;grid_settings%5Bheaders%5D%5B%5D=TGM+Assay+4&amp;grid_settings%5Bheaders%5D%5B%5D=TGM+Assay+5&amp;grid_settings%5Bheaders%5D%5B%5D=TGM+Other+Assay+List&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=409Y%2CAHR%2CB3-Flox%2CBeta2%2CBeta3%2CBrca1%2CCre-ERT2%2CDC4%2CDeREG%2CE11A-Cre%2CESR1%2CFXR%2CH2B%2CKRAS%2CMAPT%2CMCK-Cre%2CNeo%2CNFU%2COLFM1%2Cp53-R172H%2CPDX%2CSMAD%2CScn8a%2CSocs3%2CStats3%2CVil-Cre&amp;grid_settings%5Boptions%5D%5B%5D=409Y%2CAHR%2CB3-Flox%2CBeta2%2CBeta3%2CBrca1%2CCre-ERT2%2CDC4%2CDeREG%2CE11A-Cre%2CESR1%2CFXR%2CH2B%2CKRAS%2CMAPT%2CMCK-Cre%2CNeo%2CNFU%2COLFM1%2Cp53-R172H%2CPDX%2CSMAD%2CScn8a%2CSocs3%2CStats3%2CVil-Cre&amp;grid_settings%5Boptions%5D%5B%5D=409Y%2CAHR%2CB3-Flox%2CBeta2%2CBeta3%2CBrca1%2CCre-ERT2%2CDC4%2CDeREG%2CE11A-Cre%2CESR1%2CFXR%2CH2B%2CKRAS%2CMAPT%2CMCK-Cre%2CNeo%2CNFU%2COLFM1%2Cp53-R172H%2CPDX%2CSMAD%2CScn8a%2CSocs3%2CStats3%2CVil-Cre&amp;grid_settings%5Boptions%5D%5B%5D=409Y%2CAHR%2CB3-Flox%2CBeta2%2CBeta3%2CBrca1%2CCre-ERT2%2CDC4%2CDeREG%2CE11A-Cre%2CESR1%2CFXR%2CH2B%2CKRAS%2CMAPT%2CMCK-Cre%2CNeo%2CNFU%2COLFM1%2Cp53-R172H%2CPDX%2CSMAD%2CScn8a%2CSocs3%2CStats3%2CVil-Cre&amp;grid_settings%5Boptions%5D%5B%5D=409Y%2CAHR%2CB3-Flox%2CBeta2%2CBeta3%2CBrca1%2CCre-ERT2%2CDC4%2CDeREG%2CE11A-Cre%2CESR1%2CFXR%2CH2B%2CKRAS%2CMAPT%2CMCK-Cre%2CNeo%2CNFU%2COLFM1%2Cp53-R172H%2CPDX%2CSMAD%2CScn8a%2CSocs3%2CStats3%2CVil-Cre&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Samples</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>TGM Submission Template</label>
+                    <identifier>TGM_Submission_Template</identifier>
+                    <type>file_no_upload</type>
+                    <default>485813</default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>TGM Submission Template</name>
+                </field>
+                <field>
+                    <label>Number of Sample Tubes submitted</label>
+                    <identifier>Number_of_Sample_Tubes_submitted</identifier>
+                    <type>charges</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>341922</value>
+                    </value>
+                    <processed>true</processed>
+                    <name>Number of Sample Tubes submitted</name>
+                    <required-services type="array">
+                        <required-service>
+                            <id>341922</id>
+                            <name>Quick and Easy DNA Extraction</name>
+                            <url>url placeholder</url>
+                            <serviceordering>0</serviceordering>
+                            <quantity>22</quantity>
+                        </required-service>
+                    </required-services>
+                </field>
+                <field>
+                    <label>Total # of Assays Requested</label>
+                    <identifier>Number_of_Assays</identifier>
+                    <type>charges</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>341952</value>
+                    </value>
+                    <processed>true</processed>
+                    <name>Total # of Assays Requested</name>
+                    <required-services type="array">
+                        <required-service>
+                            <id>341952</id>
+                            <name>Mouse Genotype</name>
+                            <url>url placeholder</url>
+                            <serviceordering>0</serviceordering>
+                            <quantity>22</quantity>
+                        </required-service>
+                    </required-services>
+                </field>
+                <field>
+                    <label>End of Project Terms</label>
+                    <identifier>enter_label_here</identifier>
+                    <type>text_section</type>
+                    <default>          Test.           </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>          Test.           </value>
+                    <name>End of Project Terms</name>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>_1</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>I Agree</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>I Agree</value>
+                    </value>
+                    <name>_1</name>
+                </field>
+            </fields>
+        </custom-form>
+    </custom-forms>
+    <ilab-metadata>
+    </ilab-metadata>
+</ilab-response>

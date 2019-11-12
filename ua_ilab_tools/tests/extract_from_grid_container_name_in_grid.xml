@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilab-response>
+    <custom-forms type="array">
+        <custom-form>
+            <id type="integer">3256202</id>
+            <name>Fragment Analysis Multiple plates</name>
+            <note>&lt;p&gt;Fragment Anlaysis can be perfomed with 4 DYE or 5 DYE chemistry.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div class="field-content"&gt;
+&lt;p&gt;Samples should be submitted in strip tubes or 96 well v-bottom plates- filled in column format and will be run at a the dilution specified by the customer. (Default dilution is 1:50)&lt;/p&gt;
+&lt;p&gt;Compatible dye sets:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;4-Dye: FAM, HEX, NED (internal Size-Standard ROX)&lt;/li&gt;
+&lt;li&gt;5-Dye: FAM, VIC, NED, PET (internal Size-Standard LIZ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</note>
+            <fields type="array">
+                <field>
+                    <label>Form Details</label>
+                    <identifier>Form_Details</identifier>
+                    <type>text_section</type>
+                    <default>   This form can be used to submit multiple plates for fragment analysis. All plates must have the same dilution factor, DYE Set, and Size Standard applied. If you are submitting partially full 96 well plates please fill them from left to right (by column) rather than top to bottom (by row).</default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>   This form can be used to submit multiple plates for fragment analysis. All plates must have the same dilution factor, DYE Set, and Size Standard applied. If you are submitting partially full 96 well plates please fill them from left to right (by column) rather than top to bottom (by row).</value>
+                    <name>Form Details</name>
+                </field>
+                <field>
+                    <label>Dilution</label>
+                    <identifier>Dilution_each_sample</identifier>
+                    <type>select</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>1/50,1/20,1/100</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>1/50</value>
+                    <name>Dilution</name>
+                </field>
+                <field>
+                    <label>DYE Set</label>
+                    <identifier>DYE_Set_each_sample</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>D (4-dye),G5 (5-dye)</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>G5 (5-dye)</value>
+                    <name>DYE Set</name>
+                </field>
+                <field>
+                    <label>Size Standard</label>
+                    <identifier>size_standard_5dye</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if>DYE_Set_each_sample=G5 (5-dye)</show-if>
+                    <choices>GS500,GS1200</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>GS500</value>
+                    <name>Size Standard</name>
+                </field>
+                <field>
+                    <label>Size Standard</label>
+                    <identifier>size_standard_4dye</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if>DYE_Set_each_sample=D (4-dye)</show-if>
+                    <choices>GS500</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Size Standard</name>
+                </field>
+                <field>
+                    <label>Grid converter</label>
+                    <identifier>Grid_converter</identifier>
+                    <type>help</type>
+                    <default>                  To format samples from a 96-well plate map download the template file below. This will transform your Plate Map into a format you may paste into the iLab Sample List.  </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>                  To format samples from a 96-well plate map download the template file below. This will transform your Plate Map into a format you may paste into the iLab Sample List.  </value>
+                    <name>Grid converter</name>
+                </field>
+                <field>
+                    <label>Plate Map to List</label>
+                    <identifier>Plate_Map_to_List</identifier>
+                    <type>file_no_upload</type>
+                    <default>501307</default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Plate Map to List</name>
+                </field>
+                <field>
+                    <label>Sample List</label>
+                    <identifier>Sample_List__frg_</identifier>
+                    <show-if></show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample Name,Well Location,Container Name</default>
+                    <serviceordering nil="true"/>
+                    <value>[["18EB1_0007_192_0513_9253","A:1","Plate 1"],["18EB34_0007_192_0513_9253","B:1","Plate 1"],["18EB57_0007_192_0513_9253","C:1","Plate 1"],["18EBC-M-2_0007_192_0513_9253","D:1","Plate 1"],["18EBC-U-44_0007_192_0513_9253","E:1","Plate 1"],["18EBF-M-14_0007_192_0513_9253","F:1","Plate 1"],["18LU9_0007_192_0513_9253","G:1","Plate 1"],["16G62_0007_192_0513_9253","H:1","Plate 1"],["18EB3_0007_192_0513_9253","A:2","Plate 1"],["18EB36_0007_192_0513_9253","B:2","Plate 1"],["18EB58_0007_192_0513_9253","C:2","Plate 1"],["18EBC-M-5_0007_192_0513_9253","D:2","Plate 1"],["18EBC-U-69_0007_192_0513_9253","E:2","Plate 1"],["18EBF-M-18_0007_192_0513_9253","F:2","Plate 1"],["18LU10_0007_192_0513_9253","G:2","Plate 1"],["16G63_0007_192_0513_9253","H:2","Plate 1"],["18EB4_0007_192_0513_9253","A:3","Plate 1"],["18EB38_0007_192_0513_9253","B:3","Plate 1"],["18EB62_0007_192_0513_9253","C:3","Plate 1"],["18EBC-M-6_0007_192_0513_9253","D:3","Plate 1"],["18EBC-U-70_0007_192_0513_9253","E:3","Plate 1"],["18EBF-M-19_0007_192_0513_9253","F:3","Plate 1"],["16G1_0007_192_0513_9253","G:3","Plate 1"],["15A-1_0007_192_0513_9253","H:3","Plate 1"],["18EB5_0007_192_0513_9253","A:4","Plate 1"],["18EB41_0007_192_0513_9253","B:4","Plate 1"],["18EB63_0007_192_0513_9253","C:4","Plate 1"],["18EBC-U-12_0007_192_0513_9253","D:4","Plate 1"],["18EBC-U-76_0007_192_0513_9253","E:4","Plate 1"],["18EBL-1_0007_192_0513_9253","F:4","Plate 1"],["16G3_0007_192_0513_9253","G:4","Plate 1"],["15A-3_0007_192_0513_9253","H:4","Plate 1"],["18EB6_0007_192_0513_9253","A:5","Plate 1"],["18EB44_0007_192_0513_9253","B:5","Plate 1"],["18EB70_0007_192_0513_9253","C:5","Plate 1"],["18EBC-U-13_0007_192_0513_9253","D:5","Plate 1"],["18EBC-U-79_0007_192_0513_9253","E:5","Plate 1"],["18LU1_0007_192_0513_9253","F:5","Plate 1"],["16G7_0007_192_0513_9253","G:5","Plate 1"],["15A-4_0007_192_0513_9253","H:5","Plate 1"],["18EB7_0007_192_0513_9253","A:6","Plate 1"],["18EB46_0007_192_0513_9253","B:6","Plate 1"],["18EB75_0007_192_0513_9253","C:6","Plate 1"],["18EBC-U-14_0007_192_0513_9253","D:6","Plate 1"],["18EBC-U-80_0007_192_0513_9253","E:6","Plate 1"],["18LU2_0007_192_0513_9253","F:6","Plate 1"],["16G13_0007_192_0513_9253","G:6","Plate 1"],["15A-5_0007_192_0513_9253","H:6","Plate 1"],["18EB8_0007_192_0513_9253","A:7","Plate 1"],["18EB47_0007_192_0513_9253","B:7","Plate 1"],["18EB76_0007_192_0513_9253","C:7","Plate 1"],["18EBC-U-23_0007_192_0513_9253","D:7","Plate 1"],["18EBC-U-98_0007_192_0513_9253","E:7","Plate 1"],["18LU3_0007_192_0513_9253","F:7","Plate 1"],["16G31_0007_192_0513_9253","G:7","Plate 1"],["15A-7_0007_192_0513_9253","H:7","Plate 1"],["18EB10_0007_192_0513_9253","A:8","Plate 1"],["18EB48_0007_192_0513_9253","B:8","Plate 1"],["18EB77_0007_192_0513_9253","C:8","Plate 1"],["18EBC-U-24_0007_192_0513_9253","D:8","Plate 1"],["18EBC-U-K1_0007_192_0513_9253","E:8","Plate 1"],["18LU4_0007_192_0513_9253","F:8","Plate 1"],["16G34_0007_192_0513_9253","G:8","Plate 1"],["15A-9_0007_192_0513_9253","H:8","Plate 1"],["18EB13_0007_192_0513_9253","A:9","Plate 1"],["18EB50_0007_192_0513_9253","B:9","Plate 1"],["18EB78_0007_192_0513_9253","C:9","Plate 1"],["18EBC-U-25_0007_192_0513_9253","D:9","Plate 1"],["18EBC-U-K2_0007_192_0513_9253","E:9","Plate 1"],["18LU5_0007_192_0513_9253","F:9","Plate 1"],["16G41_0007_192_0513_9253","G:9","Plate 1"],["15A-13_0007_192_0513_9253","H:9","Plate 1"],["18EB20_0007_192_0513_9253","A:10","Plate 1"],["18EB51_0007_192_0513_9253","B:10","Plate 1"],["18EB79_0007_192_0513_9253","C:10","Plate 1"],["18EBC-U-27_0007_192_0513_9253","D:10","Plate 1"],["18EBC-U-K3_0007_192_0513_9253","E:10","Plate 1"],["18LU6_0007_192_0513_9253","F:10","Plate 1"],["16G44_0007_192_0513_9253","G:10","Plate 1"],["15A-10_0007_192_0513_9253","H:10","Plate 1"],["18EB29_0007_192_0513_9253","A:11","Plate 1"],["18EB55_0007_192_0513_9253","B:11","Plate 1"],["18EB80_0007_192_0513_9253","C:11","Plate 1"],["18EBC-U-30_0007_192_0513_9253","D:11","Plate 1"],["18EBF-M-7_0007_192_0513_9253","E:11","Plate 1"],["18LU7_0007_192_0513_9253","F:11","Plate 1"],["16G47_0007_192_0513_9253","G:11","Plate 1"],["15A-20_0007_192_0513_9253","H:11","Plate 1"],["18EB31_0007_192_0513_9253","A:12","Plate 1"],["18EB56_0007_192_0513_9253","B:12","Plate 1"],["18EB88_0007_192_0513_9253","C:12","Plate 1"],["18EBC-U-43_0007_192_0513_9253","D:12","Plate 1"],["18EBF-M-13_0007_192_0513_9253","E:12","Plate 1"],["18LU8_0007_192_0513_9253","F:12","Plate 1"],["16G50_0007_192_0513_9253","G:12","Plate 1"],["15A-41_0007_192_0513_9253","H:12","Plate 1"],["15A-44_0007_192_0513_9253","A:1","Plate 2"],["18EB8_201_166_1490","B:1","Plate 2"],["18EB47_201_166_1490","C:1","Plate 2"],["18EB76_201_166_1490","D:1","Plate 2"],["18EBC-U-23_201_166_1490","E:1","Plate 2"],["18EBC-U-98_201_166_1490","F:1","Plate 2"],["18LU3_201_166_1490","G:1","Plate 2"],["16G31_201_166_1490","H:1","Plate 2"],["15A-46_0007_192_0513_9253","A:2","Plate 2"],["18EB10_201_166_1490","B:2","Plate 2"],["18EB48_201_166_1490","C:2","Plate 2"],["18EB77_201_166_1490","D:2","Plate 2"],["18EBC-U-24_201_166_1490","E:2","Plate 2"],["18EBC-U-K1_201_166_1490","F:2","Plate 2"],["18LU4_201_166_1490","G:2","Plate 2"],["16G34_201_166_1490","H:2","Plate 2"],["15A-47_0007_192_0513_9253","A:3","Plate 2"],["18EB13_201_166_1490","B:3","Plate 2"],["18EB50_201_166_1490","C:3","Plate 2"],["18EB78_201_166_1490","D:3","Plate 2"],["18EBC-U-25_201_166_1490","E:3","Plate 2"],["18EBC-U-K2_201_166_1490","F:3","Plate 2"],["18LU5_201_166_1490","G:3","Plate 2"],["16G41_201_166_1490","H:3","Plate 2"],["15A-50_0007_192_0513_9253","A:4","Plate 2"],["18EB20_201_166_1490","B:4","Plate 2"],["18EB51_201_166_1490","C:4","Plate 2"],["18EB79_201_166_1490","D:4","Plate 2"],["18EBC-U-27_201_166_1490","E:4","Plate 2"],["18EBC-U-K3_201_166_1490","F:4","Plate 2"],["18LU6_201_166_1490","G:4","Plate 2"],["16G44_201_166_1490","H:4","Plate 2"],["15A-57_0007_192_0513_9253","A:5","Plate 2"],["18EB29_201_166_1490","B:5","Plate 2"],["18EB55_201_166_1490","C:5","Plate 2"],["18EB80_201_166_1490","D:5","Plate 2"],["18EBC-U-30_201_166_1490","E:5","Plate 2"],["18EBF-M-7_201_166_1490","F:5","Plate 2"],["18LU7_201_166_1490","G:5","Plate 2"],["16G47_201_166_1490","H:5","Plate 2"],["15A-58_0007_192_0513_9253","A:6","Plate 2"],["18EB31_201_166_1490","B:6","Plate 2"],["18EB56_201_166_1490","C:6","Plate 2"],["18EB88_201_166_1490","D:6","Plate 2"],["18EBC-U-43_201_166_1490","E:6","Plate 2"],["18EBF-M-13_201_166_1490","F:6","Plate 2"],["18LU8_201_166_1490","G:6","Plate 2"],["16G50_201_166_1490","H:6","Plate 2"],["18EB1_201_166_1490","A:7","Plate 2"],["18EB34_201_166_1490","B:7","Plate 2"],["18EB57_201_166_1490","C:7","Plate 2"],["18EBC-M-2_201_166_1490","D:7","Plate 2"],["18EBC-U-44_201_166_1490","E:7","Plate 2"],["18EBF-M-14_201_166_1490","F:7","Plate 2"],["18LU9_201_166_1490","G:7","Plate 2"],["16G62_201_166_1490","H:7","Plate 2"],["18EB3_201_166_1490","A:8","Plate 2"],["18EB36_201_166_1490","B:8","Plate 2"],["18EB58_201_166_1490","C:8","Plate 2"],["18EBC-M-5_201_166_1490","D:8","Plate 2"],["18EBC-U-69_201_166_1490","E:8","Plate 2"],["18EBF-M-18_201_166_1490","F:8","Plate 2"],["18LU10_201_166_1490","G:8","Plate 2"],["16G63_201_166_1490","H:8","Plate 2"],["18EB4_201_166_1490","A:9","Plate 2"],["18EB38_201_166_1490","B:9","Plate 2"],["18EB62_201_166_1490","C:9","Plate 2"],["18EBC-M-6_201_166_1490","D:9","Plate 2"],["18EBC-U-70_201_166_1490","E:9","Plate 2"],["18EBF-M-19_201_166_1490","F:9","Plate 2"],["16G1_201_166_1490","G:9","Plate 2"],["15A-1_201_166_1490","H:9","Plate 2"],["18EB5_201_166_1490","A:10","Plate 2"],["18EB41_201_166_1490","B:10","Plate 2"],["18EB63_201_166_1490","C:10","Plate 2"],["18EBC-U-12_201_166_1490","D:10","Plate 2"],["18EBC-U-76_201_166_1490","E:10","Plate 2"],["18EBL-1_201_166_1490","F:10","Plate 2"],["16G3_201_166_1490","G:10","Plate 2"],["15A-3_201_166_1490","H:10","Plate 2"],["18EB6_201_166_1490","A:11","Plate 2"],["18EB44_201_166_1490","B:11","Plate 2"],["18EB70_201_166_1490","C:11","Plate 2"],["18EBC-U-13_201_166_1490","D:11","Plate 2"],["18EBC-U-79_201_166_1490","E:11","Plate 2"],["18LU1_201_166_1490","F:11","Plate 2"],["16G7_201_166_1490","G:11","Plate 2"],["15A-4_201_166_1490","H:11","Plate 2"],["18EB7_201_166_1490","A:12","Plate 2"],["18EB46_201_166_1490","B:12","Plate 2"],["18EB75_201_166_1490","C:12","Plate 2"],["18EBC-U-14_201_166_1490","D:12","Plate 2"],["18EBC-U-80_201_166_1490","E:12","Plate 2"],["18LU2_201_166_1490","F:12","Plate 2"],["16G13_201_166_1490","G:12","Plate 2"],["15A-5_201_166_1490","H:12","Plate 2"],["15A-7_201_166_1490","A:1","Plate 3"],["18EB1_182_5047_2637","B:1","Plate 3"],["18EB34_182_5047_2637","C:1","Plate 3"],["18EB57_182_5047_2637","D:1","Plate 3"],["18EBC-M-2_182_5047_2637","E:1","Plate 3"],["18EBC-U-44_182_5047_2637","F:1","Plate 3"],["18EBF-M-14_182_5047_2637","G:1","Plate 3"],["18LU9_182_5047_2637","H:1","Plate 3"],["15A-9_201_166_1490","A:2","Plate 3"],["18EB3_182_5047_2637","B:2","Plate 3"],["18EB36_182_5047_2637","C:2","Plate 3"],["18EB58_182_5047_2637","D:2","Plate 3"],["18EBC-M-5_182_5047_2637","E:2","Plate 3"],["18EBC-U-69_182_5047_2637","F:2","Plate 3"],["18EBF-M-18_182_5047_2637","G:2","Plate 3"],["18LU10_182_5047_2637","H:2","Plate 3"],["15A-13_201_166_1490","A:3","Plate 3"],["18EB4_182_5047_2637","B:3","Plate 3"],["18EB38_182_5047_2637","C:3","Plate 3"],["18EB62_182_5047_2637","D:3","Plate 3"],["18EBC-M-6_182_5047_2637","E:3","Plate 3"],["18EBC-U-70_182_5047_2637","F:3","Plate 3"],["18EBF-M-19_182_5047_2637","G:3","Plate 3"],["16G1_182_5047_2637","H:3","Plate 3"],["15A-10_201_166_1490","A:4","Plate 3"],["18EB5_182_5047_2637","B:4","Plate 3"],["18EB41_182_5047_2637","C:4","Plate 3"],["18EB63_182_5047_2637","D:4","Plate 3"],["18EBC-U-12_182_5047_2637","E:4","Plate 3"],["18EBC-U-76_182_5047_2637","F:4","Plate 3"],["18EBL-1_182_5047_2637","G:4","Plate 3"],["16G3_182_5047_2637","H:4","Plate 3"],["15A-20_201_166_1490","A:5","Plate 3"],["18EB6_182_5047_2637","B:5","Plate 3"],["18EB44_182_5047_2637","C:5","Plate 3"],["18EB70_182_5047_2637","D:5","Plate 3"],["18EBC-U-13_182_5047_2637","E:5","Plate 3"],["18EBC-U-79_182_5047_2637","F:5","Plate 3"],["18LU1_182_5047_2637","G:5","Plate 3"],["16G7_182_5047_2637","H:5","Plate 3"],["15A-41_201_166_1490","A:6","Plate 3"],["18EB7_182_5047_2637","B:6","Plate 3"],["18EB46_182_5047_2637","C:6","Plate 3"],["18EB75_182_5047_2637","D:6","Plate 3"],["18EBC-U-14_182_5047_2637","E:6","Plate 3"],["18EBC-U-80_182_5047_2637","F:6","Plate 3"],["18LU2_182_5047_2637","G:6","Plate 3"],["16G13_182_5047_2637","H:6","Plate 3"],["15A-44_201_166_1490","A:7","Plate 3"],["18EB8_182_5047_2637","B:7","Plate 3"],["18EB47_182_5047_2637","C:7","Plate 3"],["18EB76_182_5047_2637","D:7","Plate 3"],["18EBC-U-23_182_5047_2637","E:7","Plate 3"],["18EBC-U-98_182_5047_2637","F:7","Plate 3"],["18LU3_182_5047_2637","G:7","Plate 3"],["16G31_182_5047_2637","H:7","Plate 3"],["15A-46_201_166_1490","A:8","Plate 3"],["18EB10_182_5047_2637","B:8","Plate 3"],["18EB48_182_5047_2637","C:8","Plate 3"],["18EB77_182_5047_2637","D:8","Plate 3"],["18EBC-U-24_182_5047_2637","E:8","Plate 3"],["18EBC-U-K1_182_5047_2637","F:8","Plate 3"],["18LU4_182_5047_2637","G:8","Plate 3"],["16G34_182_5047_2637","H:8","Plate 3"],["15A-47_201_166_1490","A:9","Plate 3"],["18EB13_182_5047_2637","B:9","Plate 3"],["18EB50_182_5047_2637","C:9","Plate 3"],["18EB78_182_5047_2637","D:9","Plate 3"],["18EBC-U-25_182_5047_2637","E:9","Plate 3"],["18EBC-U-K2_182_5047_2637","F:9","Plate 3"],["18LU5_182_5047_2637","G:9","Plate 3"],["16G41_182_5047_2637","H:9","Plate 3"],["15A-50_201_166_1490","A:10","Plate 3"],["18EB20_182_5047_2637","B:10","Plate 3"],["18EB51_182_5047_2637","C:10","Plate 3"],["18EB79_182_5047_2637","D:10","Plate 3"],["18EBC-U-27_182_5047_2637","E:10","Plate 3"],["18EBC-U-K3_182_5047_2637","F:10","Plate 3"],["18LU6_182_5047_2637","G:10","Plate 3"],["16G44_182_5047_2637","H:10","Plate 3"],["15A-57_201_166_1490","A:11","Plate 3"],["18EB29_182_5047_2637","B:11","Plate 3"],["18EB55_182_5047_2637","C:11","Plate 3"],["18EB80_182_5047_2637","D:11","Plate 3"],["18EBC-U-30_182_5047_2637","E:11","Plate 3"],["18EBF-M-7_182_5047_2637","F:11","Plate 3"],["18LU7_182_5047_2637","G:11","Plate 3"],["16G47_182_5047_2637","H:11","Plate 3"],["15A-58_201_166_1490","A:12","Plate 3"],["18EB31_182_5047_2637","B:12","Plate 3"],["18EB56_182_5047_2637","C:12","Plate 3"],["18EB88_182_5047_2637","D:12","Plate 3"],["18EBC-U-43_182_5047_2637","E:12","Plate 3"],["18EBF-M-13_182_5047_2637","F:12","Plate 3"],["18LU8_182_5047_2637","G:12","Plate 3"],["16G50_182_5047_2637","H:12","Plate 3"],["16G62_182_5047_2637","A:1","Plate 4"],["15A-44_182_5047_2637","B:1","Plate 4"],["18EB8_6212_207_0585","C:1","Plate 4"],["18EB51_6212_207_0585","D:1","Plate 4"],["18EB79_6212_207_0585","E:1","Plate 4"],["18EBC-U-27_6212_207_0585","F:1","Plate 4"],["18EBC-U-K3_6212_207_0585","G:1","Plate 4"],["18LU3_6212_207_0585","H:1","Plate 4"],["16G63_182_5047_2637","A:2","Plate 4"],["15A-46_182_5047_2637","B:2","Plate 4"],["18EB10_6212_207_0585","C:2","Plate 4"],["18EB55_6212_207_0585","D:2","Plate 4"],["18EB80_6212_207_0585","E:2","Plate 4"],["18EBC-U-30_6212_207_0585","F:2","Plate 4"],["18EBF-M-7_6212_207_0585","G:2","Plate 4"],["18LU4_6212_207_0585","H:2","Plate 4"],["15A-1_182_5047_2637","A:3","Plate 4"],["15A-47_182_5047_2637","B:3","Plate 4"],["18EB13_6212_207_0585","C:3","Plate 4"],["18EB56_6212_207_0585","D:3","Plate 4"],["18EB88_6212_207_0585","E:3","Plate 4"],["18EBC-U-43_6212_207_0585","F:3","Plate 4"],["18EBF-M-13_6212_207_0585","G:3","Plate 4"],["18LU5_6212_207_0585","H:3","Plate 4"],["15A-3_182_5047_2637","A:4","Plate 4"],["15A-50_182_5047_2637","B:4","Plate 4"],["18EB20_6212_207_0585","C:4","Plate 4"],["18EB57_6212_207_0585","D:4","Plate 4"],["18EBC-M-2_6212_207_0585","E:4","Plate 4"],["18EBC-U-44_6212_207_0585","F:4","Plate 4"],["18EBF-M-14_6212_207_0585","G:4","Plate 4"],["18LU6_6212_207_0585","H:4","Plate 4"],["15A-4_182_5047_2637","A:5","Plate 4"],["15A-57_182_5047_2637","B:5","Plate 4"],["18EB29_6212_207_0585","C:5","Plate 4"],["18EB58_6212_207_0585","D:5","Plate 4"],["18EBC-M-5_6212_207_0585","E:5","Plate 4"],["18EBC-U-69_6212_207_0585","F:5","Plate 4"],["18EBF-M-18_6212_207_0585","G:5","Plate 4"],["18LU7_6212_207_0585","H:5","Plate 4"],["15A-5_182_5047_2637","A:6","Plate 4"],["15A-58_182_5047_2637","B:6","Plate 4"],["18EB31_6212_207_0585","C:6","Plate 4"],["18EB62_6212_207_0585","D:6","Plate 4"],["18EBC-M-6_6212_207_0585","E:6","Plate 4"],["18EBC-U-70_6212_207_0585","F:6","Plate 4"],["18EBF-M-19_6212_207_0585","G:6","Plate 4"],["18LU8_6212_207_0585","H:6","Plate 4"],["15A-7_182_5047_2637","A:7","Plate 4"],["18EB1_6212_207_0585","B:7","Plate 4"],["18EB34_6212_207_0585","C:7","Plate 4"],["18EB63_6212_207_0585","D:7","Plate 4"],["18EBC-U-12_6212_207_0585","E:7","Plate 4"],["18EBC-U-76_6212_207_0585","F:7","Plate 4"],["18EB47_6212_207_0585","G:7","Plate 4"],["18LU9_6212_207_0585","H:7","Plate 4"],["15A-9_182_5047_2637","A:8","Plate 4"],["18EB3_6212_207_0585","B:8","Plate 4"],["18EB36_6212_207_0585","C:8","Plate 4"],["18EB70_6212_207_0585","D:8","Plate 4"],["18EBC-U-13_6212_207_0585","E:8","Plate 4"],["18EBC-U-79_6212_207_0585","F:8","Plate 4"],["18EB48_6212_207_0585","G:8","Plate 4"],["18LU10_6212_207_0585","H:8","Plate 4"],["15A-13_182_5047_2637","A:9","Plate 4"],["18EB4_6212_207_0585","B:9","Plate 4"],["18EB38_6212_207_0585","C:9","Plate 4"],["18EB75_6212_207_0585","D:9","Plate 4"],["18EBC-U-14_6212_207_0585","E:9","Plate 4"],["18EBC-U-80_6212_207_0585","F:9","Plate 4"],["18EB50_6212_207_0585","G:9","Plate 4"],["16G1_6212_207_0585","H:9","Plate 4"],["15A-10_182_5047_2637","A:10","Plate 4"],["18EB5_6212_207_0585","B:10","Plate 4"],["18EB41_6212_207_0585","C:10","Plate 4"],["18EB76_6212_207_0585","D:10","Plate 4"],["18EBC-U-23_6212_207_0585","E:10","Plate 4"],["18EBC-U-98_6212_207_0585","F:10","Plate 4"],["18EBL-1_6212_207_0585","G:10","Plate 4"],["16G3_6212_207_0585","H:10","Plate 4"],["15A-20_182_5047_2637","A:11","Plate 4"],["18EB6_6212_207_0585","B:11","Plate 4"],["18EB44_6212_207_0585","C:11","Plate 4"],["18EB77_6212_207_0585","D:11","Plate 4"],["18EBC-U-24_6212_207_0585","E:11","Plate 4"],["18EBC-U-K1_6212_207_0585","F:11","Plate 4"],["18LU1_6212_207_0585","G:11","Plate 4"],["16G7_6212_207_0585","H:11","Plate 4"],["15A-41_182_5047_2637","A:12","Plate 4"],["18EB7_6212_207_0585","B:12","Plate 4"],["18EB46_6212_207_0585","C:12","Plate 4"],["18EB78_6212_207_0585","D:12","Plate 4"],["18EBC-U-25_6212_207_0585","E:12","Plate 4"],["18EBC-U-K2_6212_207_0585","F:12","Plate 4"],["18LU2_6212_207_0585","G:12","Plate 4"],["16G13_6212_207_0585","H:12","Plate 4"],["16G31_6212_207_0585","A:1","Plate 5"],["15A-7_6212_207_0585","B:1","Plate 5"],["AP13-XA_0007_0513_207_2637","C:1","Plate 5"],["AP1-B_0007_0513_207_2637","D:1","Plate 5"],["AP4_0007_0513_207_2637","E:1","Plate 5"],["AP13-XU_201_9253_166","F:1","Plate 5"],["AP2-A2_201_9253_166","G:1","Plate 5"],["AP6-C_201_9253_166","H:1","Plate 5"],["16G34_6212_207_0585","A:2","Plate 5"],["15A-9_6212_207_0585","B:2","Plate 5"],["AP13-XJ_0007_0513_207_2637","C:2","Plate 5"],["AP1-C_0007_0513_207_2637","D:2","Plate 5"],["AP6-A_0007_0513_207_2637","E:2","Plate 5"],["AP13-X4_201_9253_166","F:2","Plate 5"],["AP2-B1_201_9253_166","G:2","Plate 5"],["AP11_201_9253_166","H:2","Plate 5"],["16G41_6212_207_0585","A:3","Plate 5"],["15A-13_6212_207_0585","B:3","Plate 5"],["AP13-XK_0007_0513_207_2637","C:3","Plate 5"],["AP2-A1_0007_0513_207_2637","D:3","Plate 5"],["AP6-B_0007_0513_207_2637","E:3","Plate 5"],["AP13-X5_201_9253_166","F:3","Plate 5"],["AP2-B2_201_9253_166","G:3","Plate 5"],["AP12_201_9253_166","H:3","Plate 5"],["16G44_6212_207_0585","A:4","Plate 5"],["15A-10_6212_207_0585","B:4","Plate 5"],["AP13-XU_0007_0513_207_2637","C:4","Plate 5"],["AP2-A2_0007_0513_207_2637","D:4","Plate 5"],["AP6-C_0007_0513_207_2637","E:4","Plate 5"],["AP13-X7_201_9253_166","F:4","Plate 5"],["AP3-A_201_9253_166","G:4","Plate 5"],["AP13_201_9253_166","H:4","Plate 5"],["16G47_6212_207_0585","A:5","Plate 5"],["15A-20_6212_207_0585","B:5","Plate 5"],["AP13-X4_0007_0513_207_2637","C:5","Plate 5"],["AP2-B1_0007_0513_207_2637","D:5","Plate 5"],["AP11_0007_0513_207_2637","E:5","Plate 5"],["AP13-X8_201_9253_166","F:5","Plate 5"],["AP3-B_201_9253_166","G:5","Plate 5"],["AP14-A_201_9253_166","H:5","Plate 5"],["16G50_6212_207_0585","A:6","Plate 5"],["15A-41_6212_207_0585","B:6","Plate 5"],["AP13-X5_0007_0513_207_2637","C:6","Plate 5"],["AP2-B2_0007_0513_207_2637","D:6","Plate 5"],["AP12_0007_0513_207_2637","E:6","Plate 5"],["AP13-X9_201_9253_166","F:6","Plate 5"],["AP3-C_201_9253_166","G:6","Plate 5"],["AP14-B_201_9253_166","H:6","Plate 5"],["16G62_6212_207_0585","A:7","Plate 5"],["15A-44_6212_207_0585","B:7","Plate 5"],["AP13-X7_0007_0513_207_2637","C:7","Plate 5"],["AP3-A_0007_0513_207_2637","D:7","Plate 5"],["AP13_0007_0513_207_2637","E:7","Plate 5"],["AP13-X13_201_9253_166","F:7","Plate 5"],["AP3-D_201_9253_166","G:7","Plate 5"],["AP13-XA_182_5047_192","H:7","Plate 5"],["16G63_6212_207_0585","A:8","Plate 5"],["15A-46_6212_207_0585","B:8","Plate 5"],["AP13-X8_0007_0513_207_2637","C:8","Plate 5"],["AP3-B_0007_0513_207_2637","D:8","Plate 5"],["AP14-A_0007_0513_207_2637","E:8","Plate 5"],["AP14-5_201_9253_166","F:8","Plate 5"],["AP3-E_201_9253_166","G:8","Plate 5"],["AP13-XJ_182_5047_192","H:8","Plate 5"],["15A-1_6212_207_0585","A:9","Plate 5"],["15A-47_6212_207_0585","B:9","Plate 5"],["AP13-X9_0007_0513_207_2637","C:9","Plate 5"],["AP3-C_0007_0513_207_2637","D:9","Plate 5"],["AP14-B_0007_0513_207_2637","E:9","Plate 5"],["AP1-A_201_9253_166","F:9","Plate 5"],["AP3-F_201_9253_166","G:9","Plate 5"],["AP13-XK_182_5047_192","H:9","Plate 5"],["15A-3_6212_207_0585","A:10","Plate 5"],["15A-50_6212_207_0585","B:10","Plate 5"],["AP13-X13_0007_0513_207_2637","C:10","Plate 5"],["AP3-D_0007_0513_207_2637","D:10","Plate 5"],["AP13-XA_201_9253_166","E:10","Plate 5"],["AP1-B_201_9253_166","F:10","Plate 5"],["AP4_201_9253_166","G:10","Plate 5"],["AP13-XU_182_5047_192","H:10","Plate 5"],["15A-4_6212_207_0585","A:11","Plate 5"],["15A-57_6212_207_0585","B:11","Plate 5"],["AP14-5_0007_0513_207_2637","C:11","Plate 5"],["AP3-E_0007_0513_207_2637","D:11","Plate 5"],["AP13-XJ_201_9253_166","E:11","Plate 5"],["AP1-C_201_9253_166","F:11","Plate 5"],["AP6-A_201_9253_166","G:11","Plate 5"],["AP13-X4_182_5047_192","H:11","Plate 5"],["15A-5_6212_207_0585","A:12","Plate 5"],["15A-58_6212_207_0585","B:12","Plate 5"],["AP1-A_0007_0513_207_2637","C:12","Plate 5"],["AP3-F_0007_0513_207_2637","D:12","Plate 5"],["AP13-XK_201_9253_166","E:12","Plate 5"],["AP2-A1_201_9253_166","F:12","Plate 5"],["AP6-B_201_9253_166","G:12","Plate 5"],["AP13-X5_182_5047_192","H:12","Plate 5"],["AP13-X7_182_5047_192","A:1","Plate 6"],["AP2-A1_182_5047_192","B:1","Plate 6"],["AP6-B_182_5047_192","C:1","Plate 6"],["AP13_182_5047_192","D:1","Plate 6"],["AP13-X5_6212_0585_1490","E:1","Plate 6"],["AP1-B_6212_0585_1490","F:1","Plate 6"],["AP3-B_6212_0585_1490","G:1","Plate 6"],["AP6-B_6212_0585_1490","H:1","Plate 6"],["AP13-X8_182_5047_192","A:2","Plate 6"],["AP2-A2_182_5047_192","B:2","Plate 6"],["AP6-C_182_5047_192","C:2","Plate 6"],["AP14-A_182_5047_192","D:2","Plate 6"],["AP13-X7_6212_0585_1490","E:2","Plate 6"],["AP1-C_6212_0585_1490","F:2","Plate 6"],["AP3-C_6212_0585_1490","G:2","Plate 6"],["AP6-C_6212_0585_1490","H:2","Plate 6"],["AP13-X9_182_5047_192","A:3","Plate 6"],["AP2-B1_182_5047_192","B:3","Plate 6"],["AP11_182_5047_192","C:3","Plate 6"],["AP14-B_182_5047_192","D:3","Plate 6"],["AP13-X8_6212_0585_1490","E:3","Plate 6"],["AP2-A1_6212_0585_1490","F:3","Plate 6"],["AP3-D_6212_0585_1490","G:3","Plate 6"],["AP11_6212_0585_1490","H:3","Plate 6"],["AP13-X13_182_5047_192","A:4","Plate 6"],["AP2-B2_182_5047_192","B:4","Plate 6"],["AP12_182_5047_192","C:4","Plate 6"],["AP13-XA_6212_0585_1490","D:4","Plate 6"],["AP13-X9_6212_0585_1490","E:4","Plate 6"],["AP2-A2_6212_0585_1490","F:4","Plate 6"],["AP3-E_6212_0585_1490","G:4","Plate 6"],["AP12_6212_0585_1490","H:4","Plate 6"],["AP14-5_182_5047_192","A:5","Plate 6"],["AP3-E_182_5047_192","B:5","Plate 6"],["AP3-A_182_5047_192","C:5","Plate 6"],["AP13-XJ_6212_0585_1490","D:5","Plate 6"],["AP13-X13_6212_0585_1490","E:5","Plate 6"],["AP2-B1_6212_0585_1490","F:5","Plate 6"],["AP3-F_6212_0585_1490","G:5","Plate 6"],["AP13_6212_0585_1490","H:5","Plate 6"],["AP1-A_182_5047_192","A:6","Plate 6"],["AP3-F_182_5047_192","B:6","Plate 6"],["AP3-B_182_5047_192","C:6","Plate 6"],["AP13-XK_6212_0585_1490","D:6","Plate 6"],["AP14-5_6212_0585_1490","E:6","Plate 6"],["AP2-B2_6212_0585_1490","F:6","Plate 6"],["AP4_6212_0585_1490","G:6","Plate 6"],["AP14-A_6212_0585_1490","H:6","Plate 6"],["AP1-B_182_5047_192","A:7","Plate 6"],["AP4_182_5047_192","B:7","Plate 6"],["AP3-C_182_5047_192","C:7","Plate 6"],["AP13-XU_6212_0585_1490","D:7","Plate 6"],["AP1-A_6212_0585_1490","E:7","Plate 6"],["AP3-A_6212_0585_1490","F:7","Plate 6"],["AP6-A_6212_0585_1490","G:7","Plate 6"],["AP14-B_6212_0585_1490","H:7","Plate 6"],["AP1-C_182_5047_192","A:8","Plate 6"],["AP6-A_182_5047_192","B:8","Plate 6"],["AP3-D_182_5047_192","C:8","Plate 6"],["AP13-X4_6212_0585_1490","D:8","Plate 6"],["Empty","E:8","Plate 6"],["Empty","F:8","Plate 6"],["Empty","G:8","Plate 6"],["Empty","H:8","Plate 6"],["Empty","A:9","Plate 6"],["Empty","B:9","Plate 6"],["Empty","C:9","Plate 6"],["Empty","D:9","Plate 6"],["Empty","E:9","Plate 6"],["Empty","F:9","Plate 6"],["Empty","G:9","Plate 6"],["Empty","H:9","Plate 6"],["Empty","A:10","Plate 6"],["Empty","B:10","Plate 6"],["Empty","C:10","Plate 6"],["Empty","D:10","Plate 6"],["Empty","E:10","Plate 6"],["Empty","F:10","Plate 6"],["Empty","G:10","Plate 6"],["Empty","H:10","Plate 6"],["Empty","A:11","Plate 6"],["Empty","B:11","Plate 6"],["Empty","C:11","Plate 6"],["Empty","D:11","Plate 6"],["Empty","E:11","Plate 6"],["Empty","F:11","Plate 6"],["Empty","G:11","Plate 6"],["Empty","H:11","Plate 6"],["Empty","A:12","Plate 6"],["Empty","B:12","Plate 6"],["Empty","C:12","Plate 6"],["Empty","D:12","Plate 6"],["Empty","E:12","Plate 6"],["Empty","F:12","Plate 6"],["Empty","G:12","Plate 6"],["Empty","H:12","Plate 6"],[null,null,null]]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+Name&amp;grid_settings%5Bheaders%5D%5B%5D=Well+Location&amp;grid_settings%5Bheaders%5D%5B%5D=Container+Name&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>_2</identifier>
+                    <type>text_section</type>
+                    <default>   Please review your sample list to ensure the Sample IDs, Well Location and Container Name listed above match your physical sample configuration.  </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>   Please review your sample list to ensure the Sample IDs, Well Location and Container Name listed above match your physical sample configuration.  </value>
+                    <name>_2</name>
+                </field>
+                <field>
+                    <label>Total Number of Samples</label>
+                    <identifier>enter_label_here_2</identifier>
+                    <type>charges</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>341951</value>
+                    </value>
+                    <processed>true</processed>
+                    <name>Total Number of Samples</name>
+                    <required-services type="array">
+                        <required-service>
+                            <id>341951</id>
+                            <name>Fragment Analysis</name>
+                            <url>url placeholder</url>
+                            <serviceordering>0</serviceordering>
+                            <quantity>540</quantity>
+                        </required-service>
+                    </required-services>
+                </field>
+                <field>
+                    <label>End of Project Terms</label>
+                    <identifier>enter_label_here</identifier>
+                    <type>text_section</type>
+                    <default>           Test.            </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>           Test.            </value>
+                    <name>End of Project Terms</name>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>_1</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>I Agree</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>I Agree</value>
+                    </value>
+                    <name>_1</name>
+                </field>
+            </fields>
+        </custom-form>
+    </custom-forms>
+    <ilab-metadata>
+  </ilab-metadata>
+</ilab-response>

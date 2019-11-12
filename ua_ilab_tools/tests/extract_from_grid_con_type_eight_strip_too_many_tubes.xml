@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilab-response>
+    <custom-forms type="array">
+        <custom-form>
+            <id type="integer">3204810</id>
+            <name>Request a Quote Next Gen Sequencing</name>
+            <note>Test.</note>
+            <fields type="array">
+                <field>
+                    <label>Request Project Quote</label>
+                    <identifier>Request_Project_Quote</identifier>
+                    <type>help</type>
+                    <default>       Please use the check boxes to select the services you would like us to discuss with you. You may provide a brief summary to help our core staff better understand your project goals. If you have relevant attachments please upload those below. </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>       Please use the check boxes to select the services you would like us to discuss with you. You may provide a brief summary to help our core staff better understand your project goals. If you have relevant attachments please upload those below. </value>
+                    <name>Request Project Quote</name>
+                </field>
+                <field>
+                    <label>Total Number of Samples</label>
+                    <identifier>Total_Number_of_Samples</identifier>
+                    <type>string</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>12</value>
+                    <name>Total Number of Samples</name>
+                </field>
+                <field>
+                    <label>Sample Preparation</label>
+                    <identifier>Sample_Preparation</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>DNA Extraction, RNA Extraction</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Sample Preparation</name>
+                </field>
+                <field>
+                    <label>Sample QC</label>
+                    <identifier>Sample_QC</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>Fluorometric Quant, Bioanalyzer, other</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>other</value>
+                    </value>
+                    <name>Sample QC</name>
+                </field>
+                <field>
+                    <label>Next Gen Services</label>
+                    <identifier>Next_Gen_Services</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>Library Prep, Exome, RNASeq, DNASeq, 16S Metagenomics, Amplicon Seq, other</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Next Gen Services</name>
+                </field>
+                <field>
+                    <label>Project summary</label>
+                    <identifier>Project_summary</identifier>
+                    <type>text</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>Sending over 12 DNA samples to run on the fragment analyzer.</value>
+                    <name>Project summary</name>
+                </field>
+            </fields>
+        </custom-form>
+        <custom-form>
+            <id type="integer">3220469</id>
+            <name>Next Gen Sample List</name>
+            <note>Test.</note>
+            <fields type="array">
+                <field>
+                    <label>Sample Container</label>
+                    <identifier>Sample_Container</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>Single Tubes,8-well strip, 96-well plate,  Multiple 96-well plates</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>8-well strip</value>
+                    <name>Sample Container</name>
+                </field>
+                <field>
+                    <label>Sequencing Application</label>
+                    <identifier>sequencing_application</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>16S Metagenomic Sequencing,RNASeq,DNASeq,Exome,Other</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>Other</value>
+                    <name>Sequencing Application</name>
+                </field>
+                <field>
+                    <label>Sample List- Tubes</label>
+                    <identifier>Sample_List__Tubes</identifier>
+                    <show-if>Sample_Container=Single Tubes</show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample ID,Volume (uL)</default>
+                    <value>[]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+ID&amp;grid_settings%5Bheaders%5D%5B%5D=+Volume+(uL)&amp;grid_settings%5Bheaders%5D%5B%5D=+Template+Type&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=75&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=DNA%2C+RNA%2C+amplicons%2C+Pre-build+Library%2C+other</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List- Tubes</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>Sample List- 8-well Strip</label>
+                    <identifier>enter_label_here</identifier>
+                    <show-if>Sample_Container=8-well strip</show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample ID,Well Number (1-8),Volume (uL)</default>
+                    <value>[["A3","1","2"],["B13","2","2"],["H11","3","2"],["F8","4","2"],["G2","5","2"],["C3","6","2"],["C5","7","2"],["E6","8","2"],["D1","1","2"],["B8","2","2"],["207","3","2"],["197","4","2"],["",null,null],[null,null,null]]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+ID&amp;grid_settings%5Bheaders%5D%5B%5D=+Well+Number+(1-8)&amp;grid_settings%5Bheaders%5D%5B%5D=++Volume+(uL)&amp;grid_settings%5Bheaders%5D%5B%5D=+Template+Type&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=75&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=DNA%2C+RNA%2C+Amplicons%2C+Other</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List- 8-well Strip</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>Template Type</label>
+                    <identifier>Template_Type_for_each</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>Tissue,Cells,Swab,Extracted DNA,Extracted RNA,Built Libraries</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>Built Libraries</value>
+                    <name>Template Type</name>
+                </field>
+                <field>
+                    <label>Grid to List Converter</label>
+                    <identifier>enter_label_here_2</identifier>
+                    <type>file_no_upload</type>
+                    <default>531810</default>
+                    <show-if>Sample_Container=96-well plate||Sample_Container=Multiple 96-well plates</show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Grid to List Converter</name>
+                </field>
+                <field>
+                    <label>Plate Label</label>
+                    <identifier>container_name</identifier>
+                    <type>string</type>
+                    <default></default>
+                    <show-if>Sample_Container=96-well plate</show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value></value>
+                    <name>Plate Label</name>
+                </field>
+                <field>
+                    <label>Sample List 96-well plate</label>
+                    <identifier>enter_label_here_1</identifier>
+                    <show-if>Sample_Container=96-well plate</show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample ID,Well Location,Volume (uL)</default>
+                    <value>[]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+ID&amp;grid_settings%5Bheaders%5D%5B%5D=+Well+Location&amp;grid_settings%5Bheaders%5D%5B%5D=++Volume+(uL)&amp;grid_settings%5Bheaders%5D%5B%5D=+Template+Type&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=100&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=DNA%2C+RNA%2C+amplicons%2C+Pre-build+Library%2C+other</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List 96-well plate</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>Sample List Multiple plates</label>
+                    <identifier>Sample_List_Multiple_plates</identifier>
+                    <show-if>Sample_Container=Multiple 96-well plates</show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample Name,Well Location,Container Name,Volume (uL)</default>
+                    <value>[]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+Name&amp;grid_settings%5Bheaders%5D%5B%5D=Well+Location&amp;grid_settings%5Bheaders%5D%5B%5D=Container+Name&amp;grid_settings%5Bheaders%5D%5B%5D=Volume+(uL)&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=125&amp;grid_settings%5Bcol_widths%5D%5B%5D=75&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=75&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List Multiple plates</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>End of Project Terms</label>
+                    <identifier>enter_label_here_3</identifier>
+                    <type>text_section</type>
+                    <default>         Test.          </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>         Test.          </value>
+                    <name>End of Project Terms</name>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>Agree_to_Project_Terms</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>I Agree</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>I Agree</value>
+                    </value>
+                    <name>Agree_to_Project_Terms</name>
+                </field>
+            </fields>
+        </custom-form>
+    </custom-forms>
+    <ilab-metadata>
+  </ilab-metadata>
+</ilab-response>

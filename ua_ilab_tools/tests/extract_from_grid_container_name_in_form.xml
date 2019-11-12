@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilab-response>
+    <custom-forms type="array">
+        <custom-form>
+            <id type="integer">3275577</id>
+            <name>Fragment Analysis</name>
+            <note>&lt;p&gt;Fragment Anlaysis can be perfomed with 4 DYE or 5 DYE chemistry.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div class="field-content"&gt;
+&lt;p&gt;Samples should be submitted in strip tubes or 96 well v-bottom plates- filled in column format and will be run at a the dilution specified by the customer. (Default dilution is 1:50)&lt;/p&gt;
+&lt;p&gt;Compatible dye sets:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;4-Dye: FAM, HEX, NED (internal Size-Standard ROX)&lt;/li&gt;
+&lt;li&gt;5-Dye: FAM, VIC, NED, PET (internal Size-Standard LIZ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</note>
+            <fields type="array">
+                <field>
+                    <label>Plate Name</label>
+                    <identifier>container_name</identifier>
+                    <type>string</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>Test-Plate-Name</value>
+                    <name>Plate Name</name>
+                </field>
+                <field>
+                    <label>Dilution</label>
+                    <identifier>Dilution_each_sample</identifier>
+                    <type>select</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>1/50,1/20,1/100</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>1/50</value>
+                    <name>Dilution</name>
+                </field>
+                <field>
+                    <label>DYE Set</label>
+                    <identifier>DYE_Set_each_sample</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>D (4-dye),G5 (5-dye)</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>G5 (5-dye)</value>
+                    <name>DYE Set</name>
+                </field>
+                <field>
+                    <label>Size Standard</label>
+                    <identifier>size_standard_5dye</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if>DYE_Set_each_sample=G5 (5-dye)</show-if>
+                    <choices>GS500,GS1200</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>GS500</value>
+                    <name>Size Standard</name>
+                </field>
+                <field>
+                    <label>Size Standard</label>
+                    <identifier>size_standard_4dye</identifier>
+                    <type>radio</type>
+                    <default></default>
+                    <show-if>DYE_Set_each_sample=D (4-dye)</show-if>
+                    <choices>GS500</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Size Standard</name>
+                </field>
+                <field>
+                    <label>Grid converter</label>
+                    <identifier>Grid_converter</identifier>
+                    <type>help</type>
+                    <default>                To format samples from a 96-well plate map download the template file below. This will transform your Plate Map into a format you may paste into the iLab Sample List.  </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>                To format samples from a 96-well plate map download the template file below. This will transform your Plate Map into a format you may paste into the iLab Sample List.  </value>
+                    <name>Grid converter</name>
+                </field>
+                <field>
+                    <label>Plate Map to List</label>
+                    <identifier>Plate_Map_to_List</identifier>
+                    <type>file_no_upload</type>
+                    <default>501307</default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Plate Map to List</name>
+                </field>
+                <field>
+                    <label>Sample List</label>
+                    <identifier>Sample_List__frg_</identifier>
+                    <show-if></show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample Name,Well Location</default>
+                    <serviceordering nil="true"/>
+                    <value>[["MXA177_AF43","A:1"],["MXA793_AF43","B:1"],["MXA796_AF43","C:1"],["MXA806_AF43","D:1"],["MXA825_AF43","E:1"],["MXA890_AF43","F:1"],["MXA893_AF43","G:1"],["MXB073_AF43","H:1"],["MXB074_AF43","A:2"],["MXB347_AF43","B:2"],["MXB348_AF43","C:2"],["MXB687_AF43","D:2"],["MXB697_AF43","E:2"],["MXB702_AF43","F:2"],["MXB709_AF43","G:2"],["MXB711_AF43","H:2"],["MXB712_AF43","A:3"],["MXB713_AF43","B:3"],["MXB716_AF43","C:3"],["MXB717_AF43","D:3"],["MXB719_AF43","E:3"],["MXB724_AF43","F:3"],["MXB726_AF43","G:3"],["MXB727_AF43","H:3"],["MXB728_AF43","A:4"],["MXB729_AF43","B:4"],["MXB731_AF43","C:4"],["MXB733_AF43","D:4"],["MXB734_AF43","E:4"],["MXB737_AF43","F:4"],["MXB738_AF43","G:4"],["MXB746_AF43","H:4"],["MXB747_AF43","A:5"],["MXB750_AF43","B:5"],["MXB752_AF43","C:5"],["MXB753_AF43","D:5"],["MXB754_AF43","E:5"],["NC_AF43","F:5"],["MXB363_AF53","G:5"],["MXB365_AF53","H:5"],["NC_AF53","A:6"],["Empty","B:6"],["Empty","C:6"],["Empty","D:6"],["Empty","E:6"],["Empty","F:6"],["Empty","G:6"],["Empty","H:6"],["MXA652_AF54","A:7"],["MXA723_AF54","B:7"],["MXA886_AF54","C:7"],["MXA887_AF54","D:7"],["MXA890_AF54","E:7"],["MXA894_AF54","F:7"],["MXA900_AF54","G:7"],["MXA904_AF54","H:7"],["MXA906_AF54","A:8"],["NC_AF54","B:8"],["Empty","C:8"],["Empty","D:8"],["Empty","E:8"],["Empty","F:8"],["Empty","G:8"],["Empty","H:8"],["MXA872_AF63","A:9"],["MXA956_AF63","B:9"],["MXA989_AF63","C:9"],["MXA990_AF63","D:9"],["MXA991_AF63","E:9"],["MXA992_AF63","F:9"],["MXA993_AF63","G:9"],["MXA994_AF63","H:9"],["MXA995_AF63","A:10"],["MXA996_AF63","B:10"],["MXA998_AF63","C:10"],["MXA999_AF63","D:10"],["MXB329_AF63","E:10"],["NC_AF63","F:10"],["Empty","G:10"],["Empty","H:10"],["MXA105_AF28","A:11"],["NC_AF28","B:11"],["Empty","C:11"],["Empty","D:11"],["Empty","E:11"],["Empty","F:11"],["Empty","G:11"],["Empty","H:11"],["Empty","A:12"],["Empty","B:12"],["Empty","C:12"],["Empty","D:12"],["Empty","E:12"],["Empty","F:12"],["Empty","G:12"],["Empty","H:12"],[null,null]]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample%2FName&amp;grid_settings%5Bheaders%5D%5B%5D=Sample%2FWell+Location&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>Total Number of Samples</label>
+                    <identifier>enter_label_here_2</identifier>
+                    <type>charges</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>341951</value>
+                    </value>
+                    <processed>true</processed>
+                    <name>Total Number of Samples</name>
+                    <required-services type="array">
+                        <required-service>
+                            <id>341951</id>
+                            <name>Fragment Analysis</name>
+                            <url>url placeholder</url>
+                            <serviceordering>0</serviceordering>
+                            <quantity>67</quantity>
+                        </required-service>
+                    </required-services>
+                </field>
+                <field>
+                    <label>End of Project Terms</label>
+                    <identifier>enter_label_here</identifier>
+                    <type>text_section</type>
+                    <default>         Test.          </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>         Test.          </value>
+                    <name>End of Project Terms</name>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>_1</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>I Agree</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>I Agree</value>
+                    </value>
+                    <name>_1</name>
+                </field>
+            </fields>
+        </custom-form>
+    </custom-forms>
+    <ilab-metadata>
+  </ilab-metadata>
+</ilab-response>

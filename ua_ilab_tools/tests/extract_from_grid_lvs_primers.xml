@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilab-response>
+    <custom-forms type="array">
+        <custom-form>
+            <id type="integer">3923775</id>
+            <name>Low Volume Sequencing</name>
+            <note>Test</note>
+            <fields type="array">
+                <field>
+                    <label>Sample List</label>
+                    <identifier>enter_label_here</identifier>
+                    <show-if></show-if>
+                    <type>handsontable_grid</type>
+                    <default>Sample Name,LVS Primer 1,Addl. LVS Primers (comma separated),Concentration (ng/uL),Template Length</default>
+                    <serviceordering nil="true"/>
+                    <value>[["1","midCMVpro","midTnC, midBirA*","312.6","8749"],["2","midCMVpro","midTnC, midBirA*","385.15","8749"],["3","midCMVpro","midTnC, midBirA*","268.55","8749"],["4","midCMVpro","midTnC, midBirA*","289.35","8749"],["5","midCMVpro","midTnC, midBirA*","359.5","8749"],["6","midCMVpro","midTnC, midBirA*","414.95","8749"],["7","midCMVpro","midTnC, midBirA*","355.75","8749"],[null,null,null,null,null],[null,null,null,null,null],[null,null,null,null,null]]</value>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <grid-settings>grid_settings%5Bheaders%5D%5B%5D=Sample+Name&amp;grid_settings%5Bheaders%5D%5B%5D=LVS+Primer+1&amp;grid_settings%5Bheaders%5D%5B%5D=Addl.+LVS+Primers+(comma+separated)&amp;grid_settings%5Bheaders%5D%5B%5D=Concentration+(ng%2FuL)&amp;grid_settings%5Bheaders%5D%5B%5D=Template+Length&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=autocomplete&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Btypes%5D%5B%5D=text&amp;grid_settings%5Bcol_widths%5D%5B%5D=250&amp;grid_settings%5Bcol_widths%5D%5B%5D=100&amp;grid_settings%5Bcol_widths%5D%5B%5D=250&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Bcol_widths%5D%5B%5D=150&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=KS%2CM13F%2CM13R%2CPCM13F%2CPCM13R%2CSK%2CSP6%2CT3%2CT7&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree&amp;grid_settings%5Boptions%5D%5B%5D=one%2Ctwo%2Cthree</grid-settings>
+                    <processed></processed>
+                    <required type="boolean">true</required>
+                    <name>Sample List</name>
+                    <required-services type="array"/>
+                </field>
+                <field>
+                    <label>Total Number of Reactions</label>
+                    <identifier>Total_Number_of_Reactions</identifier>
+                    <type>charges</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>341932</value>
+                    </value>
+                    <processed>true</processed>
+                    <name>Total Number of Reactions</name>
+                    <required-services type="array">
+                        <required-service>
+                            <id>341932</id>
+                            <name>Low Volume DNA Sequencing</name>
+                            <url>url placeholder</url>
+                            <serviceordering>0</serviceordering>
+                            <quantity>21</quantity>
+                        </required-service>
+                    </required-services>
+                </field>
+                <field>
+                    <label>Template Type</label>
+                    <identifier>Template_Type_each_sample</identifier>
+                    <type>select</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>PCR Product,Plasmid DNA,dsDNA,ssDNA,BAC DNA,Cosmid DNA,Phage DNA</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>Plasmid DNA</value>
+                    <name>Template Type</name>
+                </field>
+                <field>
+                    <label>Use DMSO</label>
+                    <identifier>DMSO_each_sample</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>DMSO</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Use DMSO</name>
+                </field>
+                <field>
+                    <label>Use Max Volume</label>
+                    <identifier>Use_Max_Volume_each_sample</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>Max Volume</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>Use Max Volume</name>
+                </field>
+                <field>
+                    <label>2 Step PCR</label>
+                    <identifier>2_Step_PCR_each_sample</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>2-Step</choices>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <name>2 Step PCR</name>
+                </field>
+                <field>
+                    <label>End of Project Terms</label>
+                    <identifier>enter_label_here_1</identifier>
+                    <type>text_section</type>
+                    <default>                        Test.                      </default>
+                    <show-if></show-if>
+                    <required type="boolean">false</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value>                        Test.                      </value>
+                    <name>End of Project Terms</name>
+                </field>
+                <field>
+                    <label></label>
+                    <identifier>enter_label_here_2</identifier>
+                    <type>checkbox</type>
+                    <default></default>
+                    <show-if></show-if>
+                    <choices>I Agree</choices>
+                    <required type="boolean">true</required>
+                    <show-in-emails type="boolean">false</show-in-emails>
+                    <value type="array">
+                        <value>I Agree</value>
+                    </value>
+                    <name>enter_label_here_2</name>
+                </field>
+            </fields>
+        </custom-form>
+    </custom-forms>
+    <ilab-metadata>
+  </ilab-metadata>
+</ilab-response>
