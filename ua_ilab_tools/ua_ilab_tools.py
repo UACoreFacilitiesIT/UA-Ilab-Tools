@@ -10,7 +10,7 @@ ONLY_INT_FIELDS = [
     "Template_Length_each_sample"]
 
 
-SKIP_FORMS = ["REQUEST A QUOTE", "DATA ANALYSIS INFO"]
+SKIP_FORM_PATTERNS = [r"REQUEST A QUOTE.*", r"DATA ANALYSIS INFO"]
 
 
 class IlabConfigError(Exception):
@@ -261,30 +261,34 @@ def extract_custom_form_info(req_id, form_id, form_soup):
                 f" {form_info.req_id} has been filled out incorrectly. The"
                 f" error message is: {traceback.format_exc()}")
 
-    # Do nothing if the form doesn't have sample information.
-    if form_name.strip().upper() not in SKIP_FORMS:
-        if not form_info.samples:
+    # Skip forms that match the patterns in SKIP_FORM_PATTERNS.
+    for pattern in SKIP_FORM_PATTERNS:
+        if re.search(pattern, form_name.strip().upper()):
+            return form_info
+
+    # Raise an error if a form doesn't have samples (and hasn't been skipped).
+    if not form_info.samples:
+        raise ValueError(
+            f"The {form_info.name} form in request {form_info.req_id}"
+            f" has no samples.")
+    extract_custom_forms.bind_container_info(form_info)
+
+    # Allows duplicate names if they have different well locations in a
+    # plate.
+    if form_info.con_type != "96 well plate":
+        sample_names = [sample.name for sample in form_info.samples]
+        if len(set(sample_names)) != len(sample_names):
             raise ValueError(
-                f"The {form_info.name} form in request {form_info.req_id} has"
-                f" no samples.")
-        extract_custom_forms.bind_container_info(form_info)
+                f"There are two or more samples named the same thing in"
+                f" request {form_info.req_id}. Please review and edit your"
+                f" sample names.")
 
-        # Allows duplicate names if they have different well locations in a
-        # plate.
-        if form_info.con_type != "96 well plate":
-            sample_names = [sample.name for sample in form_info.samples]
-            if len(set(sample_names)) != len(sample_names):
-                raise ValueError(
-                    f"There are two or more samples named the same thing in"
-                    f" request {form_info.req_id}. Please review and edit your"
-                    f" sample names.")
-
-        for name, value in form_info.field_to_values.items():
-            if name in ONLY_INT_FIELDS:
-                value = re.sub(r"[^.0-9]", "", value)
-            if "_each_sample" in name:
-                udf_name = name.replace("_each_sample", "").replace("_", " ")
-                for sample in form_info.samples:
-                    sample.udf_to_value[udf_name] = value
+    for name, value in form_info.field_to_values.items():
+        if name in ONLY_INT_FIELDS:
+            value = re.sub(r"[^.0-9]", "", value)
+        if "_each_sample" in name:
+            udf_name = name.replace("_each_sample", "").replace("_", " ")
+            for sample in form_info.samples:
+                sample.udf_to_value[udf_name] = value
 
     return form_info

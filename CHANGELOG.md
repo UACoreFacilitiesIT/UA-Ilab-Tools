@@ -3,7 +3,13 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-#### 2019/10/03 [1.0.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+#### 2019/10/03 [1.0.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+Fixed a bug where the skippable form names weren't being skipped.
+
+- The logic was pretty rigid for what forms should be skipped. Instead of making a giant list that is very brittle, the skip form list is now a list of patterns. Now, if it matches a pattern (e.g. r'Request A Quote.*' matching 'Request A Quote NGS'), it will be skipped.
+
+#### 2019/10/03 [1.0.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools/commit/db56bca84a2206e23842a1533307d73930532514)
 
 A readme was added to the repo, and a next-page bug was fixed.
 
