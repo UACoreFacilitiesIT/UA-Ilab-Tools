@@ -17,7 +17,14 @@ BOOL_FIELDS = [
 
 
 def grid_type(field_soup, form_info):
-    """Harvest all of the sample info and add it to the CustomForm."""
+    """Harvest all of the sample info and add it to the CustomForm.
+
+    Arguments:
+        field_soup (BeautifulSoup object): The soup containing the
+            field information.
+        form_info (api_types.CustomForm): the dataclass holding info on the
+            form.
+    """
     if field_soup.find("value").string == "[]":
         # The list is empty, do nothing.
         return
@@ -33,7 +40,14 @@ def grid_type(field_soup, form_info):
 
 
 def checkbox_type(field_soup, form_info):
-    """Gather info from the ilab_form checkbox type."""
+    """Gather info from the ilab_form checkbox type.
+
+    Arguments:
+        field_soup (BeautifulSoup object): The soup containing the
+            field information.
+        form_info (api_types.CustomForm): the dataclass holding info on the
+            form.
+    """
     field_name = field_soup.find("identifier").string
     if field_soup.find("value"):
         form_info.field_to_values[field_name] = True
@@ -80,7 +94,12 @@ def bind_container_info(form_info):
 
 
 def tube_bind(form_info):
-    """Add the tube container info to the samples in the form."""
+    """Add the tube container info to the samples in the form.
+
+    Arguments:
+        form_info (api_types.CustomForm): the dataclass holding info on the
+            form.
+    """
     sample_names = []
     for sample in form_info.samples:
         sample.con = api_types.Container(sample.name, "Tube")
@@ -89,7 +108,13 @@ def tube_bind(form_info):
 
 
 def plate_96_bind(form_info):
-    """Add the plate container info to the samples in the form."""
+    """Add the plate container info to the samples in the form.
+
+    Arguments:
+        form_info (api_types.CustomForm): the dataclass holding info on the
+            form.
+    """
+
     smp_locations = {}
     for sample in form_info.samples:
         sample.con = api_types.Container()
@@ -123,7 +148,12 @@ def plate_96_bind(form_info):
 
 
 def eight_well_strip_bind(form_info):
-    """Add the eight-well-strip container info to the samples in the form."""
+    """Add the eight-well-strip container info to the samples in the form.
+
+    Arguments:
+        form_info (api_types.CustomForm): the dataclass holding info on the
+            form.
+    """
     container_names = []
     tube_numbers = [sample.location for sample in form_info.samples]
     con_num = math.ceil(len(form_info.samples) / 8)
@@ -141,10 +171,6 @@ def eight_well_strip_bind(form_info):
         sample.con = api_types.Container()
         sample.con.name = container_names[num // 8]
         sample.con.con_type = "8-well strip"
-
-
-def ffpe_bind(form_info):
-    pass
 
 
 def extract_from_grid(field_soup, form_info):
@@ -218,7 +244,20 @@ def extract_from_grid(field_soup, form_info):
 
 
 def udf_parser(form, new_sample, udf_name, udf_value):
-    """Parses udf data from form grid and returns the udf-updated sample."""
+    """Parses udf data from form grid and returns the udf-updated sample.
+
+    Arguments:
+        form (api_types.CustomForm): dataclass holding information for the
+            form.
+        new_sample (api_types.Sample): a Sample dataclass to update with udf
+            info.
+        udf_name (string): the name of the udf we want to update new_sample
+            with.
+        udf_value (string): The value to add to new_sample.
+
+    Returns:
+        Updated new_sample.
+    """
     # Check if there is a poorly inputted sample.
     udf_name = udf_name.strip()
     if udf_value in ["", None]:

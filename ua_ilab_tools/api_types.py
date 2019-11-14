@@ -57,5 +57,6 @@ class CustomForm:
 
 @dataclass
 class Service_Price:
+    """The dataclass that hold the fields for a services price."""
     price: str
     samples_per_unit: str

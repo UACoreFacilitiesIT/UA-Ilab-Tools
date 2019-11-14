@@ -1,6 +1,6 @@
 # UA-Ilab-Tools
 
-Tools that interact with Ilab's REST database.
+A set of tools that interact with Ilab's REST database.
 
 ## Motivation
 
@@ -21,10 +21,10 @@ Was designed to implement a simple way to interact with Ilab's REST architecture
 ## Code Example
 
 ```python
-from ilab_api import IlabApi
-import ua_ilab_tools
+from ua_ilab_tools import ilab_api, ua_ilab_tools
 
-api = IlabApi(core_id, auth_creds)
+
+api = ilab_api.IlabApi(core_id, auth_creds)
 # "token" contains the Authorization information for headers.
 tools = ua_ilab_tools.IlabTools(core_id, token)
 
@@ -40,6 +40,12 @@ pip install ua-ilab-tools
 ```
 
 ## Tests
+You will have to create a file named "ilab_creds.json" in the format of:
+```json
+    {
+        "token": "Bearer {your token}",
+        "core_id": "{your core_id}"
+    }
 
 ```bash
 pip install --update nose
