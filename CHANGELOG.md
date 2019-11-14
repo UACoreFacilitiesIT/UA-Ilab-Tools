@@ -3,7 +3,11 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-#### 2019/10/03 [1.0.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+#### 2019/11/26 [2.0.0](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+- Now use new generic rest api.
+
+#### 2019/10/03 [1.0.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools/7db70f277f2160b302bf32b2a795215756d34dc2)
 
 Fixed a bug where the skippable form names weren't being skipped.
 
