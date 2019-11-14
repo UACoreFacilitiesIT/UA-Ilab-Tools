@@ -45,44 +45,51 @@ class IlabTools():
         """
         req_uri_to_soup = {}
         if specific_uri:
-            get_response = self.api.get(f"service_requests/{specific_uri}.xml")
-            requests_soup = BeautifulSoup(get_response, "xml")
+            get_responses = self.api.get(
+                f"service_requests/{specific_uri}.xml", get_all=False)
+            requests_soup = BeautifulSoup(get_responses[0].text, "xml")
             requests_soup = requests_soup.find("service-request")
             req_uri_to_soup[requests_soup.find("id").string] = requests_soup
         else:
-            get_response = self.api.get(
+            get_responses = self.api.get(
                 "service_requests.xml", parameters={"states": status})
-            requests_soup = BeautifulSoup(get_response, "xml")
 
-        for req_soup in requests_soup.find_all("service-request"):
-            req_uri_to_soup[req_soup.find("id").string] = req_soup
+        # soup all get responses (multiple pages or not).
+        req_paged_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
+        # Get every service-request in every page.
+        for get_soup in req_paged_soups:
+            for req_soup in get_soup.find_all("service-request"):
+                req_uri_to_soup[req_soup.find("id").string] = req_soup
 
         return req_uri_to_soup
 
-    def get_service_cost(self, service_id):
+    def get_service_cost(self, price_id):
         """Get the cost associated with the given service_id.
 
         Arguments:
-            service_id (string):
-                The id associated with a cost.
+            price_id (string):
+                The id associated with a price.
 
         Returns:
             service_price (namedtuple):
                 The calculated price of the service, or None if not found.
         """
         service_price = None
+        get_responses = self.api.get("services.xml")
 
-        response = self.api.get("services.xml")
-        all_services_soup = BeautifulSoup(response, "xml")
-
-        id_soup = all_services_soup.find(string=service_id)
-        if id_soup:
-            service_soup = id_soup.find_parent("service")
-            current_price = service_soup.find("price").find("price").string
-            unit = service_soup.find("unit").find("description").string
-            service_price = api_types.Service_Price(
-                price=float(current_price),
-                samples_per_unit=unit)
+        for response in get_responses:
+            services_page_soup = BeautifulSoup(response.text, "xml")
+            id_soup = services_page_soup.find(string=price_id)
+            if id_soup:
+                service_soup = id_soup.find_parent("service")
+                price_soup = service_soup.find("price")
+                current_price = price_soup.find("price").string
+                unit = price_soup.find("unit").find("description").string
+                service_price = api_types.Service_Price(
+                    price=float(current_price),
+                    samples_per_unit=unit)
 
         return service_price
 
@@ -98,11 +105,15 @@ class IlabTools():
                 The dict of uri_to_soup of all the charges associated with that
                 request. Returns an empty dict if not found.
         """
-        response = self.api.get(f"service_requests/{req_id}/charges.xml")
-        all_charges_soup = BeautifulSoup(response, "xml")
-        charges_uri_soup = {}
-        for charge in all_charges_soup.find_all("charge"):
-            charges_uri_soup[charge.find("id").string] = charge
+        get_responses = self.api.get(f"service_requests/{req_id}/charges.xml")
+        charge_paged_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
+        charges_uri_soup = dict()
+        for get_soup in charge_paged_soups:
+            for charge in get_soup.find_all("charge"):
+                charges_uri_soup[charge.find("id").string] = charge
+
         return charges_uri_soup
 
     def get_milestones(self, request_id):
@@ -117,14 +128,18 @@ class IlabTools():
                 Holds all {milestone name : soup of milestone}. Returns an
                 empty dict if not found.
         """
-        response = self.api.get(
+        get_responses = self.api.get(
             f"service_requests/{request_id}/milestones.xml")
-        all_milestones_soup = BeautifulSoup(response, "xml")
+        milestone_paged_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
         milestone_name_soup = {}
-        for milestone in all_milestones_soup.find_all("milestone"):
-            name_tag = milestone.find("name")
-            if name_tag:
-                milestone_name_soup[name_tag.string] = milestone
+        for get_soup in milestone_paged_soups:
+            for milestone in get_soup.find_all("milestone"):
+                name_tag = milestone.find("name")
+                if name_tag:
+                    milestone_name_soup[name_tag.string] = milestone
+
         return milestone_name_soup
 
     def get_custom_forms(self, req_id):
@@ -140,11 +155,16 @@ class IlabTools():
                 {custom form uris: form_soup}. Returns an empty dict if not
                 found.
         """
-        response = self.api.get(f"service_requests/{req_id}/custom_forms.xml")
-        all_form_soup = BeautifulSoup(response, "xml")
+        get_responses = self.api.get(
+            f"service_requests/{req_id}/custom_forms.xml")
+        form_paged_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
         forms_uri_to_soup = {}
-        for form in all_form_soup.find_all("custom-form"):
-            forms_uri_to_soup[form.find("id").string] = form
+        for get_soup in form_paged_soups:
+            for form in get_soup.find_all("custom-form"):
+                forms_uri_to_soup[form.find("id").string] = form
+
         return forms_uri_to_soup
 
 

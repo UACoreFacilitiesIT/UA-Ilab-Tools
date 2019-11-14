@@ -25,6 +25,8 @@ class TestIlabTools():
             assert value.find("state").text == "processing"
 
         request_map = self.tools.get_service_requests(status="completed")
+        # NOTE: Fails if there are not > 30 completed requests in ilab env.
+        assert len(request_map) > 30
         assert request_map.values()
         for value in request_map.values():
             assert value.find("state").text == "completed"
@@ -32,14 +34,15 @@ class TestIlabTools():
     @attr("env_requests")
     def test_get_service_requests_specific_uri(self):
         self._get_all_requests_singleton()
-        request_soup = ALL_REQS_SOUP.find("service-request")
-        req_id = request_soup.find("id").text
+        specific_req_soup = ALL_REQS_SOUP[0]
+
+        req_id = specific_req_soup.find("id").text
         request_map = self.tools.get_service_requests(specific_uri=req_id)
         assert request_map[req_id].find("id").text == req_id
 
     def test_get_service_cost(self):
         services_soup = BeautifulSoup(
-            self.tools.api.get("services.xml"), "xml")
+            self.tools.api.get("services.xml", get_all=False)[0].text, "xml")
         single_soup = services_soup.find("service")
         service_id = single_soup.find("id").text
         price = float(single_soup.find("price").find("price").text)
@@ -52,40 +55,62 @@ class TestIlabTools():
     @attr("env_requests")
     def test_get_request_charges(self):
         self._get_all_requests_singleton()
-        charges_url = ALL_REQS_SOUP.find("list-charges").find("url").text
+        for req_soup in ALL_REQS_SOUP:
+            charges_url = req_soup.find("list-charges").find("url").text
+            if charges_url:
+                break
+
         req_id = charges_url.split('/')[-2]
-        charges_response = self.tools.api.get(
+        get_responses = self.tools.api.get(
             f"service_requests/{req_id}/charges.xml")
-        charges_soup = BeautifulSoup(charges_response, "xml")
-        num_charges = len(charges_soup.find_all("charge"))
+        charges_pages_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
+        num_charges = 0
+        for get_soup in charges_pages_soups:
+            num_charges += len(get_soup.find_all("charge"))
+
         charges = self.tools.get_request_charges(req_id)
         assert len(charges.keys()) == num_charges
 
     @attr("env_requests")
     def test_get_milestones(self):
         self._get_all_requests_singleton()
-        milestone_url = ALL_REQS_SOUP.find("list-milestones").find("url").text
+        for req_soup in ALL_REQS_SOUP:
+            milestone_url = req_soup.find("list-milestones").find("url").text
+            if milestone_url:
+                break
+
         req_id = milestone_url.split('/')[-2]
-        milestone_response = self.tools.api.get(
-            f"service_requests/{req_id}/milestones.xml")
-        milestone_soup = BeautifulSoup(milestone_response, "xml")
-        name_tag = milestone_soup.find("name")
         milestone_map = self.tools.get_milestones(req_id)
-        if name_tag:
-            assert name_tag.string in milestone_map
+
+        get_responses = self.tools.api.get(
+            f"service_requests/{req_id}/milestones.xml")
+        milestones_pages_soups = [
+            BeautifulSoup(response.text, "xml") for response in get_responses]
+
+        name_tags = list()
+        for get_soup in milestones_pages_soups:
+            name_tag = get_soup.find("name")
+            if name_tag:
+                name_tags.append(name_tag)
+
+        if name_tags:
+            for tag in name_tags:
+                assert tag.text in milestone_map
         else:
             assert milestone_map == {}
 
     @attr("env_requests")
     def test_get_custom_forms_single_and_multiple_forms_same_request(self):
         self._get_all_requests_singleton()
-        req_forms_soups = ALL_REQS_SOUP.find_all("list-custom-forms")
         custom_form_urls = list()
-        for req_forms in req_forms_soups:
-            custom_form_urls = ALL_REQS_SOUP.find(
-                "list-custom-forms").find_all("url")
-            if len(custom_form_urls) > 1:
-                break
+        for req_soup in ALL_REQS_SOUP:
+            req_forms_soups = req_soup.find("list-custom-forms")
+            if req_forms_soups:
+                custom_form_urls = req_forms_soups.find_all("url")
+                if len(custom_form_urls) > 1:
+                    break
 
         req_id = custom_form_urls[0].text.split('/')[-2]
         result = self.tools.get_custom_forms(req_id)
@@ -96,24 +121,34 @@ class TestIlabTools():
     def _get_all_requests_singleton(self):
         global ALL_REQS_SOUP
         if ALL_REQS_SOUP is None:
-            response = self.tools.api.get(
-                "service_requests.xml", get_all=False)
-            response_soup = BeautifulSoup(response, "xml")
-            total_pages = int(response_soup.find("total-pages").text)
-            all_service_reqs = self.tools.api.get(
-                "service_requests.xml", total_pages=total_pages)
-            ALL_REQS_SOUP = BeautifulSoup(all_service_reqs, "xml")
+            get_responses = self.tools.api.get("service_requests.xml")
+            request_paged_soups = [
+                BeautifulSoup(
+                    response.text, "xml") for response in get_responses]
+
+            all_requests_soups = list()
+            for get_soup in request_paged_soups:
+                for req_soup in get_soup.find_all("service-request"):
+                    all_requests_soups.append(req_soup)
+
+            ALL_REQS_SOUP = all_requests_soups
 
     @attr("env_requests")
     def test_extract_project_info_with_and_without_full_name(self):
         self._get_all_requests_singleton()
-        form_url = ALL_REQS_SOUP.find("list-custom-forms").find("url").text
+        for req_soup in ALL_REQS_SOUP:
+            form_url = req_soup.find("list-custom-forms").find("url").text
+            if form_url:
+                break
+
         req_url = form_url.replace("/custom_forms.xml", ".xml")
-        req_soup = BeautifulSoup(self.tools.api.get(req_url), "xml")
+        req_soup = BeautifulSoup(
+            self.tools.api.get(req_url, get_all=False)[0].text, "xml")
 
         prj_name = req_soup.find("name").text
         res_name = req_soup.find("owner").find("name").text
         email = req_soup.find("owner").find("email").text
+        # NOTE: Change to your institution's email address.
         if "email.arizona.edu" in email:
             lab_type = "internal"
         else:

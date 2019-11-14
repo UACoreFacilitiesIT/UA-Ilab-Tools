@@ -1,2 +1,5 @@
 *__pycache__*
 *creds*
+build/*
+dist/*
+*.egg-info

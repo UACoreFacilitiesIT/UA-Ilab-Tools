@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """A host of tools that interact with the ilab REST database."""
 from ua_generic_rest_api import ua_generic_rest_api
+from bs4 import BeautifulSoup
 
 
 class IlabApi(ua_generic_rest_api.GenericRestApi):
@@ -10,5 +11,12 @@ class IlabApi(ua_generic_rest_api.GenericRestApi):
         super().__init__(host, auth_creds, "page", page_tag=None)
 
     def get(self, endpoints, parameters=None, get_all=True, total_pages=None):
-        responses = super().get(endpoints, parameters, get_all, total_pages)
-        return '\n'.join([response.text for response in responses])
+        response = super().get(endpoints, parameters, get_all)
+        if get_all:
+            first_page_soup = BeautifulSoup(response[0].text, "xml")
+            total_pages = first_page_soup.find("total-pages")
+            if total_pages:
+                total_pages = int(total_pages.text)
+                return super().get(endpoints, parameters, get_all, total_pages)
+
+        return response
