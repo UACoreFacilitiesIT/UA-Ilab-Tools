@@ -143,7 +143,7 @@ class TestIlabTools():
 
         req_url = form_url.replace("/custom_forms.xml", ".xml")
         req_soup = BeautifulSoup(
-            self.tools.api.get(req_url, get_all=False)[0].text, "xml")
+            self.tools.api.get(req_url)[0].text, "xml")
 
         prj_name = req_soup.find("name").text
         res_name = req_soup.find("owner").find("name").text

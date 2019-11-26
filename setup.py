@@ -15,10 +15,13 @@ setup(
     author="Stephen Stern, Rafael Lopez, Etienne Thompson",
     author_email="sterns1@email.arizona.edu",
     include_package_data=True,
-    description=(
-        "Tools that interact with Agilent's iLab REST architecture."),
     long_description=readme("README.md"),
     long_description_content_type='text/markdown',
     url="https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools",
     license="MIT",
+    description=(
+        "Tools that interact with Agilent's iLab REST architecture."),
+    install_requires=[
+        "ua-generic-rest-api"
+    ]
 )

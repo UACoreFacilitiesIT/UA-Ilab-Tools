@@ -52,9 +52,11 @@ class IlabTools():
             req_uri_to_soup[requests_soup.find("id").string] = requests_soup
         else:
             get_responses = self.api.get(
-                "service_requests.xml", parameters={"states": status})
+                "service_requests.xml",
+                parameters={"states": status},
+                get_all=True)
 
-        # soup all get responses (multiple pages or not).
+        # Soup all get responses (multiple pages or not).
         req_paged_soups = [
             BeautifulSoup(response.text, "xml") for response in get_responses]
 
