@@ -25,7 +25,9 @@ def grid_type(field_soup, form_info):
         form_info (api_types.CustomForm): the dataclass holding info on the
             form.
     """
-    if field_soup.find("value").string == "[]":
+    if field_soup.find("value") is None:
+        return
+    elif field_soup.find("value").string == "[]":
         # The list is empty, do nothing.
         return
 
