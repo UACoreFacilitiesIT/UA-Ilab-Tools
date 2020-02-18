@@ -180,6 +180,8 @@ def extract_from_grid(field_soup, form_info):
 
     Arguments:
         field_soup (BeautifulSoup object): The soup of the grid field.
+        form_info (api_types.CustomForm): dataclass holding information for the
+            form.
 
     Returns:
         samples (list of Samples): The samples extracted from the grid with as

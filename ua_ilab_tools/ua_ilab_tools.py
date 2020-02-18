@@ -1,5 +1,6 @@
 """Tools that interact with Ilab's REST database."""
 import re
+import copy
 import traceback
 from bs4 import BeautifulSoup
 from ua_ilab_tools import extract_custom_forms, ilab_api, api_types
@@ -10,7 +11,7 @@ ONLY_INT_FIELDS = [
     "Template_Length_each_sample"]
 
 
-SKIP_FORM_PATTERNS = [r"REQUEST A QUOTE.*", r"DATA ANALYSIS INFO"]
+SKIP_FORM_PATTERNS = [r"REQUEST A QUOTE.*", r".*NQ.*"]
 
 
 class IlabConfigError(Exception):
@@ -267,6 +268,14 @@ def extract_custom_form_info(req_id, form_id, form_soup):
     for pattern in SKIP_FORM_PATTERNS:
         if re.search(pattern, form_name.strip().upper()):
             return form_info
+
+    if form_info.field_to_values.get("duplicate_samples"):
+        if form_info.field_to_values["duplicate_samples"] == "Yes":
+            b_samples = copy.deepcopy(form_info.samples)
+            for a_sample, b_sample in zip(form_info.samples, b_samples):
+                a_sample.name += "A"
+                b_sample.name += "B"
+            form_info.samples = form_info.samples + b_samples
 
     # Raise an error if a form doesn't have samples (and hasn't been skipped).
     if not form_info.samples:
