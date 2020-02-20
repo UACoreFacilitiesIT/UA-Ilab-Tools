@@ -3,7 +3,13 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-#### 2020/2/18  [2.0.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+#### 2020/2/20 [2.0.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+Removed double headed management of forms.
+
+- Was previously checking for both form names which have no samples and if the form itself has no samples. This is redundant, and was changed to only check if a form has no samples.
+
+#### 2020/2/18 [2.0.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
 
 Added sample duplication capabilities and added new form type to skip.
 

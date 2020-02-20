@@ -228,7 +228,7 @@ def extract_custom_form_info(req_id, form_id, form_soup):
         TypeError:
             The form has no fields configured.
         ValueError:
-            The form has no samples or duplicate samples.
+            The form has duplicate samples.
     """
 
     # If we need any of these types, we can make new methods.
@@ -264,10 +264,9 @@ def extract_custom_form_info(req_id, form_id, form_soup):
                 f" {form_info.req_id} has been filled out incorrectly. The"
                 f" error message is: {traceback.format_exc()}")
 
-    # Skip forms that match the patterns in SKIP_FORM_PATTERNS.
-    for pattern in SKIP_FORM_PATTERNS:
-        if re.search(pattern, form_name.strip().upper()):
-            return form_info
+    # Raise an error if a form doesn't have samples.
+    if not form_info.samples:
+        return form_info
 
     if form_info.field_to_values.get("duplicate_samples"):
         if form_info.field_to_values["duplicate_samples"] == "Yes":
@@ -277,11 +276,6 @@ def extract_custom_form_info(req_id, form_id, form_soup):
                 b_sample.name += "B"
             form_info.samples = form_info.samples + b_samples
 
-    # Raise an error if a form doesn't have samples (and hasn't been skipped).
-    if not form_info.samples:
-        raise ValueError(
-            f"The {form_info.name} form in request {form_info.req_id}"
-            f" has no samples.")
     extract_custom_forms.bind_container_info(form_info)
 
     # Allows duplicate names if they have different well locations in a
