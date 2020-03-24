@@ -6,6 +6,10 @@ import ast
 from ua_ilab_tools import api_types
 
 
+# NOTE: Change these globals to match names of these types of fields in your
+# Clarity instance.
+
+
 ONLY_INT_FIELDS = [
     "Concentration_each_sample", "Concentration", "Volume (uL)",
     "Initial_Number_Slides_or_Punches_each_sample", "Template Length",
