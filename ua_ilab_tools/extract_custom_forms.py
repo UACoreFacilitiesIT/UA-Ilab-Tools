@@ -10,6 +10,10 @@ from ua_ilab_tools import api_types
 # Clarity instance.
 
 
+DISALLOWED_CHARS = r""
+REPLACE_CHARS = r""
+
+
 ONLY_INT_FIELDS = [
     "Concentration_each_sample", "Concentration", "Volume (uL)",
     "Initial_Number_Slides_or_Punches_each_sample", "Template Length",
@@ -18,6 +22,13 @@ ONLY_INT_FIELDS = [
 
 BOOL_FIELDS = [
     "H&E Slide Submitted?"]
+
+
+def update_globals(disallowed_chars, replace_chars):
+    global DISALLOWED_CHARS
+    DISALLOWED_CHARS = disallowed_chars
+    global REPLACE_CHARS
+    REPLACE_CHARS = replace_chars
 
 
 def grid_type(field_soup, form_info):
@@ -349,7 +360,7 @@ def _sanitize_text(text):
     text = unicodedata.normalize("NFKD", text).encode(
         "ascii", "ignore").decode("ascii")
     # Convert anything that is not alphanumeric or a hyphen to a hyphen.
-    text = re.sub(r"[^a-zA-Z0-9:,.+]", "-", text)
+    text = re.sub(DISALLOWED_CHARS, REPLACE_CHARS, text)
     # Convert '+' to 'plus' to avoid the confusion of changing a '+' to
     # a '-'.
     text = re.sub(r"[+]", "plus", text)
