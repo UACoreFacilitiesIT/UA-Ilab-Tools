@@ -3,6 +3,16 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+#### 2021/1/20 [2.1.0](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+Updated setup.py dependencies to be more explicit and contain every dependency.
+
+Added some unreleased code which makes the characters we santize in text dynamically set.
+
+- Previously some dependencies were not listed, but were assumed to be installed through other packages.
+
+- Different iLab cores may require different characters to be removed from form information, and so there is not an update_globals function which allows a program to set the characters to be sanitized dynamically.
+
 #### 2020/2/20 [2.0.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
 
 Removed double headed management of forms.
