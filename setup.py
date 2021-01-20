@@ -10,7 +10,7 @@ def readme(filename):
 
 setup(
     name="ua_ilab_tools",
-    version="2.0.3",
+    version="2.1.0",
     packages=find_packages(),
     author="Stephen Stern, Rafael Lopez, Etienne Thompson",
     author_email="sterns1@email.arizona.edu",
