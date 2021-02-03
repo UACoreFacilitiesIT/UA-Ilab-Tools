@@ -12,6 +12,9 @@ ALL_REQS_SOUP = None
 
 class TestIlabTools():
     def setUp(self):
+        DISALLOWED_CHARS = r"[^a-zA-Z0-9:,.]"
+        REPLACE_CHARS = "-"
+        extract_custom_forms.update_globals(DISALLOWED_CHARS, REPLACE_CHARS)
         creds_path = (os.path.join(
             os.path.split(__file__)[0], "ilab_creds.json"))
         with open(creds_path, 'r') as file:
