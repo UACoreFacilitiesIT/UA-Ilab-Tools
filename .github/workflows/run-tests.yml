@@ -1,0 +1,42 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install OpenConnect and JQ
+        run: sudo apt-get install openconnect jq -y
+      - name: Connect to U of A VPN and update stache tokens.
+        run: |
+          STACHE_RESPONSE=$(curl -H "X-STACHE-READ-KEY: ${{ secrets.STACHE_READ_KEY }}" https://stache.arizona.edu${{ secrets.STACHE_READ_ENDPOINT }})
+          STACHE_TOKENS=$(echo "$STACHE_RESPONSE" | jq '.secret')
+          JUST_TOKENS=$(echo "$STACHE_TOKENS" | tr -d '\\"n[]')
+          IFS=','
+          read -ra PIECES <<< "$JUST_TOKENS"
+          FIRST="${PIECES[0]}"
+          FIRST_LENGTH=$(echo ${#FIRST})
+          THE_REST='"['"${STACHE_TOKENS:($FIRST_LENGTH + 7)}"''
+          curl -X POST -H "X-STACHE-KEY: ${{ secrets.STACHE_EDIT_KEY }}" -H "Content-Type: application/json" -d '{"nickname": "Netid Bypass Codes", "secret": '"$THE_REST"'}' https://stache.arizona.edu${{ secrets.STACHE_EDIT_ENDPOINT}}
+          echo -e "${{ secrets.NETID_PASSWORD }}\n$FIRST\n" | sudo openconnect --background --authgroup=1 --user=${{ secrets.NETID_USERNAME }} --passwd-on-stdin vpn.arizona.edu
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install nose
+      - name: Run Tests
+        run: |
+          cd ua_ilab_tools/tests
+          nosetests
+      - name: Disconnect from VPN
+        run: |
+          sudo killall openconnect
