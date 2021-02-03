@@ -34,7 +34,7 @@ jobs:
           pip install .
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install nose
-          echo '{"core_id": "${{ secrets.ILAB_CREDS_ID }}", "token": "${{ secrets.ILAB_CREDS_TOKEN }}"}' > ilab_creds.json
+          echo '{"core_id": "${{ secrets.ILAB_CREDS_ID }}", "token": "${{ secrets.ILAB_CREDS_TOKEN }}"}' > ua_ilab_tools/tests/ilab_creds.json
       - name: Run Tests
         run: |
           cd ua_ilab_tools/tests
