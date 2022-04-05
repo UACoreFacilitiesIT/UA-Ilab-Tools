@@ -3,6 +3,12 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+#### 2022/4/05 [2.1.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+Added ability to specify the date to start your search for service requests.
+
+- The default iLab date range is two years from the current date. If you're trying to find service requests from outside of this date range, you need to specify the date specifically. This has been added to the get_service_requests function in ua_ilab_tools.py as an argument with a default value of 2015. You can override this default if you need a smaller or larger date range.
+
 #### 2021/1/20 [2.1.0](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
 
 Updated setup.py dependencies to be more explicit and contain every dependency.

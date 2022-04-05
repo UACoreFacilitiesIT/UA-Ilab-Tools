@@ -28,7 +28,12 @@ class IlabTools():
         }
         self.api = ilab_api.IlabApi(core_id, auth_creds)
 
-    def get_service_requests(self, status="processing", specific_uri=None):
+    def get_service_requests(
+        self,
+        status="processing",
+        from_date="2015-01-01T12:00Z",
+        specific_uri=None
+    ):
         """Get the service requests with the given status from ilab's REST DB.
 
         Keyword Arguments:
@@ -54,7 +59,7 @@ class IlabTools():
         else:
             get_responses = self.api.get(
                 "service_requests.xml",
-                parameters={"states": status},
+                parameters={"states": status, "from_date": from_date},
                 get_all=True)
 
         # Soup all get responses (multiple pages or not).
