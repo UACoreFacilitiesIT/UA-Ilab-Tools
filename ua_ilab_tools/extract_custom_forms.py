@@ -1,9 +1,10 @@
 """Methods to harvest data from iLab custom forms."""
+
 import re
 import math
 import unicodedata
 import ast
-from ua_ilab_tools import api_types
+import api_types
 
 
 # NOTE: Change these globals to match names of these types of fields in your
@@ -15,13 +16,16 @@ REPLACE_CHARS = r""
 
 
 ONLY_INT_FIELDS = [
-    "Concentration_each_sample", "Concentration", "Volume (uL)",
-    "Initial_Number_Slides_or_Punches_each_sample", "Template Length",
-    "Template_Length_each_sample"]
+    "Concentration_each_sample",
+    "Concentration",
+    "Volume (uL)",
+    "Initial_Number_Slides_or_Punches_each_sample",
+    "Template Length",
+    "Template_Length_each_sample",
+]
 
 
-BOOL_FIELDS = [
-    "H&E Slide Submitted?"]
+BOOL_FIELDS = ["H&E Slide Submitted?"]
 
 
 def update_globals(disallowed_chars, replace_chars):
@@ -52,7 +56,8 @@ def grid_type(field_soup, form_info):
             f"There are 2 or more grids with sample data in the"
             f" {form_info.name} Custom Form for Request:"
             f" {form_info.req_id} . Please delete the data from the grid"
-            f" that you don't want to use and try again.")
+            f" that you don't want to use and try again."
+        )
     form_info.samples.extend(extract_from_grid(field_soup, form_info))
 
 
@@ -85,8 +90,9 @@ def all_other_types(field_soup, form_info):
     """
     value = field_soup.find("value")
     if value and value.string:
-        form_info.field_to_values[field_soup.find(
-            "identifier").string] = field_soup.find("value").string
+        form_info.field_to_values[field_soup.find("identifier").string] = (
+            field_soup.find("value").string
+        )
 
     if value == "container_name":
         form_info.con_type = "96 well plate"
@@ -104,7 +110,8 @@ def bind_container_info(form_info):
     con_strategy = {
         "Tube": tube_bind,
         "8-well strip": eight_well_strip_bind,
-        "96 well plate": plate_96_bind}
+        "96 well plate": plate_96_bind,
+    }
 
     # Every sample assuredly has the same con_type.
     con_strategy[form_info.con_type](form_info)
@@ -144,7 +151,8 @@ def plate_96_bind(form_info):
         else:
             raise TypeError(
                 f"The sample {sample.name} in request {form_info.req_id} on"
-                f" form {form_info.name} was not given a container name.")
+                f" form {form_info.name} was not given a container name."
+            )
 
         # Replace all not ascii chars with ascii ones.
         con_name = _sanitize_text(con_name)
@@ -154,14 +162,14 @@ def plate_96_bind(form_info):
 
         # Make a dictionary of con_name: well, to make sure that there are no
         # two samples in the same well.
-        smp_locations.setdefault(
-            sample.con.name, []).append(sample.location)
+        smp_locations.setdefault(sample.con.name, []).append(sample.location)
     for locs in smp_locations.values():
         if len(set(locs)) != len(locs):
             raise TypeError(
                 f"There are two or more samples with the same well"
                 f" location in request {form_info.req_id}. Please review and"
-                f" edit your well locations.")
+                f" edit your well locations."
+            )
 
 
 def eight_well_strip_bind(form_info):
@@ -179,7 +187,8 @@ def eight_well_strip_bind(form_info):
         raise TypeError(
             f"There are two or more samples with the same tube number in"
             f" request {form_info.req_id}. Please review and edit your"
-            f" tube numbers.")
+            f" tube numbers."
+        )
 
     # Create the list of names for each strip submitted.
     for num in range(con_num):
@@ -222,7 +231,7 @@ def extract_from_grid(field_soup, form_info):
     """
 
     samples = list()
-    column_names = field_soup.find("default").string.split(',')
+    column_names = field_soup.find("default").string.split(",")
     sample_values = field_soup.find("value").string
     sample_values = sample_values.replace("null", "None")
 
@@ -245,19 +254,18 @@ def extract_from_grid(field_soup, form_info):
 
         # Skip the first column, as that must always be the sample name.
         for udf_name, udf_value in zip(column_names[1:], value[1:]):
-            new_sample = udf_parser(
-                form_info, new_sample, udf_name, udf_value)
+            new_sample = udf_parser(form_info, new_sample, udf_name, udf_value)
 
         samples.append(new_sample)
 
     for sample in samples:
         if "TGM Assay List" in sample.udf_to_value.keys():
             sample.udf_to_value["TGM Assay List"] = sample.udf_to_value[
-                "TGM Assay List"].strip(',')
+                "TGM Assay List"
+            ].strip(",")
 
         if "Primer" in sample.udf_to_value.keys():
-            sample.udf_to_value["Primer"] = sample.udf_to_value[
-                "Primer"].strip(',')
+            sample.udf_to_value["Primer"] = sample.udf_to_value["Primer"].strip(",")
 
     return samples
 
@@ -281,8 +289,7 @@ def udf_parser(form, new_sample, udf_name, udf_value):
     udf_name = udf_name.strip()
     if udf_value in ["", None]:
         if udf_name in ["Well Location", "Tube Number"]:
-            raise TypeError(
-                f"The sample {new_sample.name} was given no well location.")
+            raise TypeError(f"The sample {new_sample.name} was given no well location.")
         # Don't add empty values as udf's, and return the sample and
         # con_type unchanged.
         return new_sample
@@ -301,8 +308,7 @@ def udf_parser(form, new_sample, udf_name, udf_value):
         return new_sample
 
     elif udf_name == "Container Name":
-        new_sample.udf_to_value["Container Name"] = re.sub(
-            r"[:,.]", "-", udf_value)
+        new_sample.udf_to_value["Container Name"] = re.sub(r"[:,.]", "-", udf_value)
         form.con_type = "96 well plate"
         return new_sample
 
@@ -322,9 +328,10 @@ def udf_parser(form, new_sample, udf_name, udf_value):
     elif udf_name == "Average Template Length":
         udf_name = "Template Length"
 
-    elif (udf_name in [
-            "Average Template Concentration (ng/uL)",
-            "Concentration (ng/uL)"]):
+    elif udf_name in [
+        "Average Template Concentration (ng/uL)",
+        "Concentration (ng/uL)",
+    ]:
         udf_name = "Concentration"
 
     elif "TGM Assay" in udf_name:
@@ -357,8 +364,7 @@ def udf_parser(form, new_sample, udf_name, udf_value):
 def _sanitize_text(text):
     """Convert text to ascii, replace chars [^a-zA-Z0-9:,.] with '-'."""
     # Replace all not ascii chars with ascii ones
-    text = unicodedata.normalize("NFKD", text).encode(
-        "ascii", "ignore").decode("ascii")
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
     # Convert anything that is not alphanumeric or a hyphen to a hyphen.
     text = re.sub(DISALLOWED_CHARS, REPLACE_CHARS, text)
     # Convert '+' to 'plus' to avoid the confusion of changing a '+' to
@@ -375,20 +381,19 @@ def _translate_to_well(well, plate=True):
     if re.search(r"[A-H]:[1-9][0-3]{0,1}", well) is None:
         # A1-H12.
         if re.search(r"[A-H][1-9][0-3]{0,1}", well):
-            well = well[0] + ':' + well[1:]
+            well = well[0] + ":" + well[1:]
         # A01-H09 or A:01 - H:09.
         elif re.search(r"[A-H]:{0,1}0[1-9]", well):
-            if ':' not in well:
-                well = well.replace('0', ':')
+            if ":" not in well:
+                well = well.replace("0", ":")
             else:
-                well = well.replace('0', '')
+                well = well.replace("0", "")
         # If the well is 1-8, treat as a strip tube.
         elif re.search(r"^[1-8]$", well):
             # If someone has inputted numbers instead of well locations
             #  for a plate format, raise an error.
             if plate:
-                raise TypeError(
-                    "We don't accept plate indexes of that type.")
+                raise TypeError("We don't accept plate indexes of that type.")
             # Convert 1-8 into the strip tube format.
             well = f"A:{well}"
         # Anything else.
