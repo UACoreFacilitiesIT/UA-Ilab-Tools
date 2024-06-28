@@ -1,14 +1,21 @@
 """Tools that interact with Ilab's REST database."""
+
 import re
 import copy
 import traceback
 from bs4 import BeautifulSoup
-from ua_ilab_tools import extract_custom_forms, ilab_api, api_types
+import extract_custom_forms
+import ilab_api
+import api_types
 
 ONLY_INT_FIELDS = [
-    "Concentration_each_sample", "Concentration", "Volume (uL)",
-    "Initial_Number_Slides_or_Punches_each_sample", "Template Length",
-    "Template_Length_each_sample"]
+    "Concentration_each_sample",
+    "Concentration",
+    "Volume (uL)",
+    "Initial_Number_Slides_or_Punches_each_sample",
+    "Template Length",
+    "Template_Length_each_sample",
+]
 
 
 SKIP_FORM_PATTERNS = [r"REQUEST A QUOTE.*", r".*NQ.*"]
@@ -18,21 +25,15 @@ class IlabConfigError(Exception):
     """The request or form has been configured or altered incorrectly."""
 
 
-class IlabTools():
+class IlabTools:
     def __init__(self, core_id, token):
         if "Bearer" not in token:
             token = "Bearer " + token
-        auth_creds = {
-            "Authorization": f"{token}",
-            "Content-Type": "application/xml"
-        }
+        auth_creds = {"Authorization": f"{token}", "Content-Type": "application/xml"}
         self.api = ilab_api.IlabApi(core_id, auth_creds)
 
     def get_service_requests(
-        self,
-        status="processing",
-        from_date="2015-01-01T12:00Z",
-        specific_uri=None
+        self, status="processing", from_date="2015-01-01T12:00Z", specific_uri=None
     ):
         """Get the service requests with the given status from ilab's REST DB.
 
@@ -52,7 +53,8 @@ class IlabTools():
         req_uri_to_soup = {}
         if specific_uri:
             get_responses = self.api.get(
-                f"service_requests/{specific_uri}.xml", get_all=False)
+                f"service_requests/{specific_uri}.xml", get_all=False
+            )
             requests_soup = BeautifulSoup(get_responses[0].text, "xml")
             requests_soup = requests_soup.find("service-request")
             req_uri_to_soup[requests_soup.find("id").string] = requests_soup
@@ -60,11 +62,13 @@ class IlabTools():
             get_responses = self.api.get(
                 "service_requests.xml",
                 parameters={"states": status, "from_date": from_date},
-                get_all=True)
+                get_all=True,
+            )
 
         # Soup all get responses (multiple pages or not).
         req_paged_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses]
+            BeautifulSoup(response.text, "xml") for response in get_responses
+        ]
 
         # Get every service-request in every page.
         for get_soup in req_paged_soups:
@@ -96,8 +100,8 @@ class IlabTools():
                 current_price = price_soup.find("price").string
                 unit = price_soup.find("unit").find("description").string
                 service_price = api_types.Service_Price(
-                    price=float(current_price),
-                    samples_per_unit=unit)
+                    price=float(current_price), samples_per_unit=unit
+                )
 
         return service_price
 
@@ -115,7 +119,8 @@ class IlabTools():
         """
         get_responses = self.api.get(f"service_requests/{req_id}/charges.xml")
         charge_paged_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses]
+            BeautifulSoup(response.text, "xml") for response in get_responses
+        ]
 
         charges_uri_soup = dict()
         for get_soup in charge_paged_soups:
@@ -136,10 +141,10 @@ class IlabTools():
                 Holds all {milestone name : soup of milestone}. Returns an
                 empty dict if not found.
         """
-        get_responses = self.api.get(
-            f"service_requests/{request_id}/milestones.xml")
+        get_responses = self.api.get(f"service_requests/{request_id}/milestones.xml")
         milestone_paged_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses]
+            BeautifulSoup(response.text, "xml") for response in get_responses
+        ]
 
         milestone_name_soup = {}
         for get_soup in milestone_paged_soups:
@@ -163,10 +168,10 @@ class IlabTools():
                 {custom form uris: form_soup}. Returns an empty dict if not
                 found.
         """
-        get_responses = self.api.get(
-            f"service_requests/{req_id}/custom_forms.xml")
+        get_responses = self.api.get(f"service_requests/{req_id}/custom_forms.xml")
         form_paged_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses]
+            BeautifulSoup(response.text, "xml") for response in get_responses
+        ]
 
         forms_uri_to_soup = {}
         for get_soup in form_paged_soups:
@@ -193,7 +198,7 @@ def extract_project_info(req_soup, full_name=False):
     if full_name:
         prj_name = req_soup.find("name").string
     else:
-        prj_name = req_soup.find("name").string.split('-')[-1]
+        prj_name = req_soup.find("name").string.split("-")[-1]
     res_name = req_soup.find("owner").find("name").string
     email = req_soup.find("owner").find("email").string
     # NOTE: Change this line to your own institution's email domain.
@@ -208,7 +213,8 @@ def extract_project_info(req_soup, full_name=False):
         extract_custom_forms._sanitize_text(res_name.split()[-1]),
         extract_custom_forms._sanitize_text(res_lab),
         email,
-        "")
+        "",
+    )
     prj_info = api_types.Project(prj_name, prj_res)
 
     return prj_info
@@ -241,7 +247,8 @@ def extract_custom_form_info(req_id, form_id, form_soup):
     field_strategy = {
         "handsontable_grid": extract_custom_forms.grid_type,
         "checkbox": extract_custom_forms.checkbox_type,
-        "all_others": extract_custom_forms.all_other_types}
+        "all_others": extract_custom_forms.all_other_types,
+    }
 
     # Find the desired custom form out of all of the form_soup.
     target_form = form_soup.find(string=form_id)
@@ -267,7 +274,8 @@ def extract_custom_form_info(req_id, form_id, form_soup):
             raise TypeError(
                 f"The grid in the {form_info.name} form in request"
                 f" {form_info.req_id} has been filled out incorrectly. The"
-                f" error message is: {traceback.format_exc()}")
+                f" error message is: {traceback.format_exc()}"
+            )
 
     # Raise an error if a form doesn't have samples.
     if not form_info.samples:
@@ -291,7 +299,8 @@ def extract_custom_form_info(req_id, form_id, form_soup):
             raise ValueError(
                 f"There are two or more samples named the same thing in"
                 f" request {form_info.req_id}. Please review and edit your"
-                f" sample names.")
+                f" sample names."
+            )
 
     for name, value in form_info.field_to_values.items():
         if name in ONLY_INT_FIELDS:

@@ -3,6 +3,15 @@
 All notable changes to this project can be found here.
 The format of this changelog is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+#### 2024/06/27 [2.1.2](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
+
+Begins updating repo to current versions of Python.
+
+Introduces Poetry as a dependency manager.
+
+- Because of the time difference between this update and the last one, we have a few deprecation issues. We need to refactor the test script to no longer use nose. And in the meantime, we need this script to move to Python 3.12. This release is the first attempt to do so, and future releases will have updates and finish this process.
+
+
 #### 2022/4/05 [2.1.1](https://github.com/UACoreFacilitiesIT/UA-Ilab-Tools)
 
 Added ability to specify the date to start your search for service requests.
