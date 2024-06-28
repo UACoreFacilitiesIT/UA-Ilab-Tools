@@ -4,9 +4,8 @@ import re
 import copy
 import traceback
 from bs4 import BeautifulSoup
-import extract_custom_forms
-import ilab_api
-import api_types
+from ua_ilab_tools import extract_custom_forms, ilab_api, api_types
+
 
 ONLY_INT_FIELDS = [
     "Concentration_each_sample",
