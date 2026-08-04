@@ -40,19 +40,16 @@ pip install ua-ilab-tools
 ```
 
 ## Tests
-You will have to create a file named "ilab_creds.json" in the format of:
-```json
-    {
-        "token": "Bearer {your token}",
-        "core_id": "{your core_id}"
-    }
+The test suite has been migrated to Python's built-in unittest framework and no longer requires Nose.
 
+To run the tests, from the repository root:
 ```bash
-pip install --update nose
-cd ./ua_ilab_tools
-cd ./tests
-nosetests test_ilab_tools.py
+python -m unittest ua_ilab_tools.tests.test_ilab_tools
 ```
+### Note:
+- The XML fixture-based tests run completely offline. (No network requests made with token & core_id)
+- API-related tests use mocked responses and do not require access to an iLab environment.
+- ilab_creds.json is no longer required for running the unit test suite.
 
 ## How to Use
 

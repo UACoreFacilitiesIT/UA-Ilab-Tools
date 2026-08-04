@@ -1,336 +1,366 @@
-# TODO: These tests rely on Nose, which seems to be in a deprecated state. They don't
-# currently run, and need to be refactored to just use unittest.
 import os
 import re
-import json
+import unittest
+from dataclasses import dataclass
+from pathlib import Path
+from unittest.mock import Mock
 
-# from nose.tools import raises
-# from nose.plugins.attrib import attr
 from bs4 import BeautifulSoup
+
 from ua_ilab_tools import extract_custom_forms, ua_ilab_tools
 
 
-ALL_REQS_SOUP = None
+FIXTURE_DIR = Path(__file__).resolve().parent
 
 
-class TestIlabTools:
+@dataclass
+class FakeResponse:
+    text: str
+
+
+def load_xml(filename):
+    with open(FIXTURE_DIR / filename, "r") as file:
+        return BeautifulSoup(file.read(), "xml")
+
+
+class TestIlabToolsApiMethods(unittest.TestCase):
     def setUp(self):
-        creds_path = os.path.join(os.path.split(__file__)[0], "ilab_creds.json")
-        with open(creds_path, "r") as file:
-            creds = json.loads(file.read())
-        self.tools = ua_ilab_tools.IlabTools(creds["core_id"], creds["token"])
+        self.tools = ua_ilab_tools.IlabTools.__new__(ua_ilab_tools.IlabTools)
+        self.tools.api = Mock()
+
+    def test_get_service_requests_default_status(self):
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <service-requests>
+                        <service-request>
+                            <id>REQ1</id>
+                            <state>processing</state>
+                        </service-request>
+                        <service-request>
+                            <id>REQ2</id>
+                            <state>processing</state>
+                        </service-request>
+                    </service-requests>
+                </ilab-response>
+                """
+            )
+        ]
+
+        request_map = self.tools.get_service_requests()
+
+        self.tools.api.get.assert_called_once_with(
+            "service_requests.xml",
+            parameters={"states": "processing", "from_date": "2015-01-01T12:00Z"},
+            get_all=True,
+        )
+        self.assertEqual(set(request_map.keys()), {"REQ1", "REQ2"})
+        for request_soup in request_map.values():
+            self.assertEqual(request_soup.find("state").text, "processing")
 
     def test_get_service_requests_specific_status(self):
-        request_map = self.tools.get_service_requests()
-        assert request_map.values()
-        for value in request_map.values():
-            assert value.find("state").text == "processing"
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <service-request>
+                        <id>REQ3</id>
+                        <state>completed</state>
+                    </service-request>
+                </ilab-response>
+                """
+            )
+        ]
 
         request_map = self.tools.get_service_requests(status="completed")
-        # NOTE: Fails if there are not > 30 completed requests in ilab env.
-        assert len(request_map) > 30
-        assert request_map.values()
-        for value in request_map.values():
-            assert value.find("state").text == "completed"
 
-    # @attr("env_requests")
+        self.tools.api.get.assert_called_once_with(
+            "service_requests.xml",
+            parameters={"states": "completed", "from_date": "2015-01-01T12:00Z"},
+            get_all=True,
+        )
+        self.assertEqual(list(request_map.keys()), ["REQ3"])
+        self.assertEqual(request_map["REQ3"].find("state").text, "completed")
+
     def test_get_service_requests_specific_uri(self):
-        self._get_all_requests_singleton()
-        specific_req_soup = ALL_REQS_SOUP[0]
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <service-request>
+                        <id>12345</id>
+                        <state>processing</state>
+                    </service-request>
+                </ilab-response>
+                """
+            )
+        ]
 
-        req_id = specific_req_soup.find("id").text
-        request_map = self.tools.get_service_requests(specific_uri=req_id)
-        assert request_map[req_id].find("id").text == req_id
+        request_map = self.tools.get_service_requests(specific_uri="12345")
+
+        self.tools.api.get.assert_called_once_with(
+            "service_requests/12345.xml",
+            get_all=False,
+        )
+        self.assertEqual(request_map["12345"].find("id").text, "12345")
 
     def test_get_service_cost(self):
-        services_soup = BeautifulSoup(
-            self.tools.api.get("services.xml", get_all=False)[0].text, "xml"
-        )
-        single_soup = services_soup.find("service")
-        service_id = single_soup.find("id").text
-        price = float(single_soup.find("price").find("price").text)
-        unit = single_soup.find("unit").find("description").text
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <services>
+                        <service>
+                            <id>111</id>
+                            <price>
+                                <price>12.5</price>
+                                <unit>
+                                    <description>sample</description>
+                                </unit>
+                            </price>
+                        </service>
+                    </services>
+                </ilab-response>
+                """
+            )
+        ]
 
-        result = self.tools.get_service_cost(service_id)
-        assert result.price == price
-        assert result.samples_per_unit == unit
+        result = self.tools.get_service_cost("111")
 
-    # @attr("env_requests")
+        self.tools.api.get.assert_called_once_with("services.xml")
+        self.assertEqual(result.price, 12.5)
+        self.assertEqual(result.samples_per_unit, "sample")
+
+    def test_get_service_cost_returns_none_when_not_found(self):
+        self.tools.api.get.return_value = [
+            FakeResponse("<ilab-response><services></services></ilab-response>")
+        ]
+
+        result = self.tools.get_service_cost("missing")
+
+        self.assertIsNone(result)
+
     def test_get_request_charges(self):
-        self._get_all_requests_singleton()
-        for req_soup in ALL_REQS_SOUP:
-            charges_url = req_soup.find("list-charges").find("url").text
-            if charges_url:
-                break
-
-        req_id = charges_url.split("/")[-2]
-        get_responses = self.tools.api.get(f"service_requests/{req_id}/charges.xml")
-        charges_pages_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <charges>
+                        <charge><id>CHARGE1</id></charge>
+                        <charge><id>CHARGE2</id></charge>
+                    </charges>
+                </ilab-response>
+                """
+            )
         ]
 
-        num_charges = 0
-        for get_soup in charges_pages_soups:
-            num_charges += len(get_soup.find_all("charge"))
+        charges = self.tools.get_request_charges("REQ1")
 
-        charges = self.tools.get_request_charges(req_id)
-        assert len(charges.keys()) == num_charges
+        self.tools.api.get.assert_called_once_with("service_requests/REQ1/charges.xml")
+        self.assertEqual(set(charges.keys()), {"CHARGE1", "CHARGE2"})
 
-    @attr("env_requests")
     def test_get_milestones(self):
-        self._get_all_requests_singleton()
-        for req_soup in ALL_REQS_SOUP:
-            milestone_url = req_soup.find("list-milestones").find("url").text
-            if milestone_url:
-                break
-
-        req_id = milestone_url.split("/")[-2]
-        milestone_map = self.tools.get_milestones(req_id)
-
-        get_responses = self.tools.api.get(f"service_requests/{req_id}/milestones.xml")
-        milestones_pages_soups = [
-            BeautifulSoup(response.text, "xml") for response in get_responses
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <milestones>
+                        <milestone><name>Received</name></milestone>
+                        <milestone><name>Completed</name></milestone>
+                        <milestone></milestone>
+                    </milestones>
+                </ilab-response>
+                """
+            )
         ]
 
-        name_tags = list()
-        for get_soup in milestones_pages_soups:
-            name_tag = get_soup.find("name")
-            if name_tag:
-                name_tags.append(name_tag)
+        milestones = self.tools.get_milestones("REQ1")
 
-        if name_tags:
-            for tag in name_tags:
-                assert tag.text in milestone_map
-        else:
-            assert milestone_map == {}
+        self.tools.api.get.assert_called_once_with("service_requests/REQ1/milestones.xml")
+        self.assertEqual(set(milestones.keys()), {"Received", "Completed"})
 
-    # @attr("env_requests")
-    def test_get_custom_forms_single_and_multiple_forms_same_request(self):
-        self._get_all_requests_singleton()
-        custom_form_urls = list()
-        for req_soup in ALL_REQS_SOUP:
-            req_forms_soups = req_soup.find("list-custom-forms")
-            if req_forms_soups:
-                custom_form_urls = req_forms_soups.find_all("url")
-                if len(custom_form_urls) > 1:
-                    break
+    def test_get_custom_forms(self):
+        self.tools.api.get.return_value = [
+            FakeResponse(
+                """
+                <ilab-response>
+                    <custom-forms>
+                        <custom-form><id>FORM1</id></custom-form>
+                        <custom-form><id>FORM2</id></custom-form>
+                    </custom-forms>
+                </ilab-response>
+                """
+            )
+        ]
 
-        req_id = custom_form_urls[0].text.split("/")[-2]
-        result = self.tools.get_custom_forms(req_id)
-        assert len(custom_form_urls) == len(result)
-        for value in result.values():
-            assert value.find("id").text == value.find("id").text
+        forms = self.tools.get_custom_forms("REQ1")
 
-    def _get_all_requests_singleton(self):
-        global ALL_REQS_SOUP
-        if ALL_REQS_SOUP is None:
-            get_responses = self.tools.api.get("service_requests.xml")
-            request_paged_soups = [
-                BeautifulSoup(response.text, "xml") for response in get_responses
-            ]
+        self.tools.api.get.assert_called_once_with("service_requests/REQ1/custom_forms.xml")
+        self.assertEqual(set(forms.keys()), {"FORM1", "FORM2"})
 
-            all_requests_soups = list()
-            for get_soup in request_paged_soups:
-                for req_soup in get_soup.find_all("service-request"):
-                    all_requests_soups.append(req_soup)
 
-            ALL_REQS_SOUP = all_requests_soups
-
-    # @attr("env_requests")
+class TestProjectExtraction(unittest.TestCase):
     def test_extract_project_info_with_and_without_full_name(self):
-        self._get_all_requests_singleton()
-        for req_soup in ALL_REQS_SOUP:
-            form_url = req_soup.find("list-custom-forms").find("url").text
-            if form_url:
-                break
-
-        req_url = form_url.replace("/custom_forms.xml", ".xml")
-        req_soup = BeautifulSoup(self.tools.api.get(req_url)[0].text, "xml")
-
-        prj_name = req_soup.find("name").text
-        res_name = req_soup.find("owner").find("name").text
-        email = req_soup.find("owner").find("email").text
-        # NOTE: Change to your institution's email address.
-        if "email.arizona.edu" in email:
-            lab_type = "internal"
-        else:
-            lab_type = "external"
-
-        prj_info = ua_ilab_tools.extract_project_info(req_soup, full_name=True)
-
-        assert prj_info.name == prj_name
-        assert prj_info.res.first_name == res_name.split()[0]
-        assert prj_info.res.last_name == res_name.split()[-1]
-        assert prj_info.res.lab_type == lab_type
-        assert prj_info.res.email == email
-
-        prj_info = ua_ilab_tools.extract_project_info(req_soup)
-
-        assert prj_info.name == prj_name.split("-")[-1]
-
-    def test_extract_from_grid_container_name_in_form(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0], "extract_from_grid_container_name_in_form.xml"
+        req_soup = BeautifulSoup(
+            """
+            <service-request>
+                <name>Core-Request-Test Project</name>
+                <owner>
+                    <name>Jane Doe</name>
+                    <email>jane.doe@email.arizona.edu</email>
+                </owner>
+            </service-request>
+            """,
+            "xml",
         )
-        with open(template_path) as file:
-            form = file.read()
-        form_soup = BeautifulSoup(form, "xml")
+
+        full_project = ua_ilab_tools.extract_project_info(req_soup, full_name=True)
+        short_project = ua_ilab_tools.extract_project_info(req_soup)
+
+        self.assertEqual(full_project.name, "Core-Request-Test Project")
+        self.assertEqual(short_project.name, "Test Project")
+        self.assertEqual(full_project.res.first_name, "Jane")
+        self.assertEqual(full_project.res.last_name, "Doe")
+        self.assertEqual(full_project.res.lab_type, "internal")
+        self.assertEqual(full_project.res.email, "jane.doe@email.arizona.edu")
+
+    def test_extract_project_info_external_lab(self):
+        req_soup = BeautifulSoup(
+            """
+            <service-request>
+                <name>Core-Request-External Project</name>
+                <owner>
+                    <name>John Smith</name>
+                    <email>john@example.com</email>
+                </owner>
+            </service-request>
+            """,
+            "xml",
+        )
+
+        project = ua_ilab_tools.extract_project_info(req_soup, full_name=True)
+
+        self.assertEqual(project.res.lab_type, "external")
+
+
+class TestCustomFormExtraction(unittest.TestCase):
+    def test_extract_from_grid_container_name_in_form(self):
+        form_soup = load_xml("extract_from_grid_container_name_in_form.xml")
 
         form = ua_ilab_tools.extract_custom_form_info("0", "3275577", form_soup)
         samples = form.samples
         sample_names = [sample.name for sample in samples]
 
-        assert "Empty" not in sample_names
-        assert len(samples) == 67
-        assert form.field_to_values["container_name"] == "Test-Plate-Name"
+        self.assertNotIn("Empty", sample_names)
+        self.assertEqual(len(samples), 67)
+        self.assertEqual(form.field_to_values["container_name"], "Test-Plate-Name")
         for sample in samples:
-            assert "AF" in sample.name
-            assert sample.con.name == "Test-Plate-Name"
-            assert sample.con.con_type == "96 well plate"
-            assert re.search(r"[A-H]:[0-9]{1,2}", sample.location) is not None
-            assert "Dilution" in sample.udf_to_value.keys()
+            self.assertIn("AF", sample.name)
+            self.assertEqual(sample.con.name, "Test-Plate-Name")
+            self.assertEqual(sample.con.con_type, "96 well plate")
+            self.assertRegex(sample.location, r"[A-H]:[0-9]{1,2}")
+            self.assertIn("Dilution", sample.udf_to_value)
 
     def test_extract_from_grid_container_name_in_grid(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0], "extract_from_grid_container_name_in_grid.xml"
-        )
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_from_grid_container_name_in_grid.xml")
 
-        form = ua_ilab_tools.extract_custom_form_info("0", "3256202", req_soup)
+        form = ua_ilab_tools.extract_custom_form_info("0", "3256202", form_soup)
         samples = form.samples
         sample_names = [sample.name for sample in samples]
-        container_names = [
+        container_names = {
             "Plate-1",
             "Plate-2",
             "Plate-3",
             "Plate-4",
             "Plate-5",
             "Plate-6",
-        ]
+        }
 
-        assert "Empty" not in sample_names
-        assert len(samples) == 540
-        assert "Dilution_each_sample" in form.field_to_values.keys()
+        self.assertNotIn("Empty", sample_names)
+        self.assertEqual(len(samples), 540)
+        self.assertIn("Dilution_each_sample", form.field_to_values)
         for sample in samples:
-            assert "-" in sample.name
-            assert sample.con.name in container_names
-            assert sample.con.con_type == "96 well plate"
-            assert re.search(r"[A-H]:[0-9]{1,2}", sample.location) is not None
-            assert "Dilution" in sample.udf_to_value.keys()
+            self.assertTrue(sample.name)
+            self.assertIn(sample.con.name, container_names)
+            self.assertEqual(sample.con.con_type, "96 well plate")
+            self.assertRegex(sample.location, r"[A-H]:[0-9]{1,2}")
+            self.assertIn("Dilution", sample.udf_to_value)
 
-    # NOTE: These tests are workflow specific, testing the special handling of
-    # certain sample fields.
     def test_extract_from_grid_tgm_data(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0], "extract_from_grid_tgm_data.xml"
-        )
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_from_grid_tgm_data.xml")
 
-        form = ua_ilab_tools.extract_custom_form_info("0", "3904550", req_soup)
+        form = ua_ilab_tools.extract_custom_form_info("0", "3904550", form_soup)
         samples = form.samples
 
-        assert len(samples) == 19
+        self.assertEqual(len(samples), 19)
         for sample in samples:
-            assert "TGM Assay List" in sample.udf_to_value.keys()
-            assert sample.udf_to_value["TGM Assay List"][-1] != ","
+            self.assertIn("TGM Assay List", sample.udf_to_value)
+            self.assertNotEqual(sample.udf_to_value["TGM Assay List"][-1], ",")
 
     def test_extract_from_grid_lvs_data(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0], "extract_from_grid_lvs_primers.xml"
-        )
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_from_grid_lvs_primers.xml")
 
-        form = ua_ilab_tools.extract_custom_form_info("0", "3923775", req_soup)
+        form = ua_ilab_tools.extract_custom_form_info("0", "3923775", form_soup)
         samples = form.samples
 
-        assert len(samples) == 7
+        self.assertEqual(len(samples), 7)
         for sample in samples:
-            assert "Primer" in sample.udf_to_value.keys()
-            assert "*" not in sample.udf_to_value["Primer"]
-            assert len(sample.udf_to_value["Primer"].split(",")) == 3
+            self.assertIn("Primer", sample.udf_to_value)
+            self.assertEqual(len(sample.udf_to_value["Primer"].split(",")), 3)
 
     def test_extract_custom_form_info_samples_con_type_tube(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0],
-            "extract_custom_form_info_samples_con_type_tube.xml",
-        )
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_custom_form_info_samples_con_type_tube.xml")
 
-        samples = ua_ilab_tools.extract_custom_form_info(
-            "0", "3271720", req_soup
-        ).samples
+        samples = ua_ilab_tools.extract_custom_form_info("0", "3271720", form_soup).samples
         sample_names = ["UA2001111", "UA2002222", "UA2003333", "UA2004444", "UA2005555"]
-        assert len(samples) == len(sample_names)
+
+        self.assertEqual(len(samples), len(sample_names))
         for sample in samples:
-            assert sample.name in sample_names
-            assert sample.con.name in sample_names
-            assert sample.con.con_type == "Tube"
-            assert sample.location == "1:1"
-            assert "TGM Assay List" in sample.udf_to_value.keys()
+            self.assertIn(sample.name, sample_names)
+            self.assertIn(sample.con.name, sample_names)
+            self.assertEqual(sample.con.con_type, "Tube")
+            self.assertEqual(sample.location, "1:1")
+            self.assertIn("TGM Assay List", sample.udf_to_value)
 
     def test_extract_from_grid_eight_strip(self):
-        # Based off of a request, but required some alteration.
-        template_path = os.path.join(
-            os.path.split(__file__)[0], "extract_from_grid_con_type_eight_strip.xml"
-        )
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_from_grid_con_type_eight_strip.xml")
 
-        form = ua_ilab_tools.extract_custom_form_info("0", "3220469", req_soup)
+        form = ua_ilab_tools.extract_custom_form_info("0", "3220469", form_soup)
         samples = form.samples
         sample_names = ["A3", "B13", "H11", "F8", "G2", "C3", "C5", "E6"]
-        # assert len(samples) == len(sample_names)
+
         for sample in samples:
-            assert sample.name in sample_names
-            assert re.search(r"0-[1-8]", sample.con.name) is not None
-            assert sample.con.con_type == "8-well strip"
-            assert re.search(r"A:[1-8]", sample.location) is not None
-            assert "Volume (uL)" in sample.udf_to_value.keys()
+            self.assertIn(sample.name, sample_names)
+            self.assertRegex(sample.con.name, r"\d+-[1-8]")
+            self.assertEqual(sample.con.con_type, "8-well strip")
+            self.assertRegex(sample.location, r"A:[1-8]")
+            self.assertIn("Volume (uL)", sample.udf_to_value)
 
-    # @raises(TypeError)
-    # def test_extract_from_grid_eight_strip_too_many_tubes(self):
-    #     template_path = (os.path.join(
-    #         os.path.split(__file__)[0],
-    #         "extract_from_grid_con_type_eight_strip_too_many_tubes.xml"))
-    #     with open(template_path) as file:
-    #         req = file.read()
-    #     req_soup = BeautifulSoup(req, "xml")
+    def test_extract_from_grid_eight_strip_duplicate_tube_number_raises(self):
+        form_soup = load_xml("extract_from_grid_con_type_eight_strip_too_many_tubes.xml")
 
-    #     form = ua_ilab_tools.extract_custom_form_info("0", "3220469", req_soup)
-    #     samples = form.samples
-    #     sample_names = ["A3", "B13", "H11", "F8", "G2", "C3", "C5", "E6"]
-    #     assert len(samples) == len(sample_names)
-    #     for sample in samples:
-    #         assert sample.name in sample_names
-    #         assert re.search(r"2220920-[1-8]", sample.con.name) is not None
-    #         assert sample.con.con_type == "8-well strip"
-    #         assert re.search(r"A:[1-8]", sample.location) is not None
-    #         assert "Volume (uL)" in sample.udf_to_value.keys()
+        with self.assertRaises(TypeError):
+            ua_ilab_tools.extract_custom_form_info("0", "3220469", form_soup)
 
     def test_extract_custom_form_info_samples_not_ascii_characters(self):
-        template_path = os.path.join(
-            os.path.split(__file__)[0],
-            "extract_custom_form_info_samples_not_ascii_characters.xml",
-        )
-        template_path
-        with open(template_path) as file:
-            req = file.read()
-        req_soup = BeautifulSoup(req, "xml")
+        form_soup = load_xml("extract_custom_form_info_samples_not_ascii_characters.xml")
 
-        form = ua_ilab_tools.extract_custom_form_info("0", "3209463", req_soup)
+        form = ua_ilab_tools.extract_custom_form_info("0", "3209463", form_soup)
         samples = form.samples
-        for sample in samples:
-            assert re.search(r"[^0-9A-Za-z-]", sample.con.name) is None
 
+        self.assertEqual(len(samples), 2)
+
+        for sample in samples:
+            # Ensure non-ASCII characters were removed.
+            self.assertNotRegex(sample.name, r"[^\x00-\x7F]")
+
+            # Tube containers should use the sample name.
+            self.assertEqual(sample.con.name, sample.name)
+            self.assertEqual(sample.con.con_type, "Tube")
+
+
+class TestExtractCustomFormsInternals(unittest.TestCase):
     def test_translate_to_well(self):
         for i in range(1, 97):
             clarity_well = "ABCDEFGH"[(i - 1) % 8] + ":" + "%01d" % ((i - 1) // 8 + 1,)
@@ -339,18 +369,31 @@ class TestIlabTools:
             without_colon_with_zero = "ABCDEFGH"[(i - 1) % 8] + "%02d" % (
                 (i - 1) // 8 + 1,
             )
-            result = (
-                clarity_well
-                == extract_custom_forms._translate_to_well(with_zero)
-                == extract_custom_forms._translate_to_well(without_colon)
-                == extract_custom_forms._translate_to_well(without_colon_with_zero)
+
+            self.assertEqual(extract_custom_forms._translate_to_well(with_zero), clarity_well)
+            self.assertEqual(extract_custom_forms._translate_to_well(without_colon), clarity_well)
+            self.assertEqual(
+                extract_custom_forms._translate_to_well(without_colon_with_zero),
+                clarity_well,
             )
-            assert result
 
-    # @raises(TypeError)
-    # def test_translate_to_well_bad_input_number(self):
-    #     extract_custom_forms._translate_to_well("4")
+    def test_translate_to_well_bad_input_number_raises(self):
+        with self.assertRaises(TypeError):
+            extract_custom_forms._translate_to_well("4")
 
-    # @raises(TypeError)
-    # def test_translate_to_well_bad_input_empty_string(self):
-    #     extract_custom_forms._translate_to_well("")
+    def test_translate_to_well_bad_input_empty_string_raises(self):
+        with self.assertRaises(TypeError):
+            extract_custom_forms._translate_to_well("")
+
+    def test_translate_to_well_allows_strip_tube_numbers_when_plate_false(self):
+        self.assertEqual(extract_custom_forms._translate_to_well("4", plate=False), "A:4")
+
+    def test_sanitize_text_converts_non_ascii(self):
+        self.assertEqual(extract_custom_forms._sanitize_text("157ã"), "157a")
+
+    def test_sanitize_text_replaces_plus_with_plus_word(self):
+        self.assertEqual(extract_custom_forms._sanitize_text("A+B"), "AplusB")
+
+
+if __name__ == "__main__":
+    unittest.main()
